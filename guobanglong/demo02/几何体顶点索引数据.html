@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "../lib/build/three.module.js",
+            "three/addons/": "../lib/examples/jsm/"
+          }
+        }
+    </script>
+</head>
+<body>
+<script type="module">
+    import * as THREE from 'three';
+    import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+
+    const geometry = new THREE.BufferGeometry();
+    // 添加顶点数据
+    const vertices = new Float32Array([
+        0, 0, 0,
+        80, 0, 0,
+        80, 80, 0,
+        0, 80, 0
+    ])
+    const indexes = new Uint16Array([
+        0, 1, 2, 0, 2, 3
+    ])
+    geometry.index = new THREE.BufferAttribute(indexes, 1)
+    // 3个为一组，表示一个顶点xyz坐标
+    const attribute = new THREE.BufferAttribute(vertices, 3)
+    geometry.attributes.position = attribute
+
+    const material = new THREE.MeshBasicMaterial({
+        color: 0xffff00,
+        side: THREE.DoubleSide
+    })
+
+    // 定义了要给点模型对象
+    const points = new THREE.Mesh(geometry, material)
+    // 相机输出画布尺寸，单位px
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // 场景
+    const scene = new THREE.Scene();
+    scene.add(points);
+
+    const axesHelper = new THREE.AxesHelper(150);
+    scene.add(axesHelper);
+
+    // 电光源
+    const pointLight = new THREE.PointLight(0xffffff, 1.0);
+    // pointLight.intensity = 10.0; // 光源强度
+    pointLight.decay = 0.0; // 光源衰减，0.0表示不衰减
+    pointLight.position.set(400, 200, 300);
+    // scene.add(pointLight);
+
+    // 可视化点光源
+    const pointLightHelper = new THREE.PointLightHelper(pointLight, 10);
+    // scene.add(pointLightHelper);
+
+    // 添加一个环境光
+    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambient);
+
+    // 添加一个平行光
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight.position.set(-50, -100, -60);
+    scene.add(directionalLight);
+
+    // 可视化平行光
+    const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5, 0xff0000);
+    scene.add(directionalLightHelper);
+
+    // 透视投影相机
+    const camera = new THREE.PerspectiveCamera(30, width / height, .1, 3000);
+    camera.position.set(200, 200, 200);
+    scene.add(camera);
+    // 相机的视线、观察目标点的坐标
+    camera.lookAt(0, 0, 0); // 坐标原点
+
+    // 渲染器
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    renderer.render(scene, camera);
+    document.body.appendChild(renderer.domElement);
+
+    // 设置相机控件轨道控制器
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.addEventListener('change', () => {
+        renderer.render(scene, camera);
+    });
+</script>
+</body>
+</html>
