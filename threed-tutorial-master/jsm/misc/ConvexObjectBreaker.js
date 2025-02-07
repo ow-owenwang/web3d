@@ -27,7 +27,7 @@ import { ConvexGeometry } from '../geometries/ConvexGeometry.js';
  *  geometries with ConvexGeometry. The BoxGeometry, SphereGeometry and other convex primitives
  *  can also be used.
  *
- * Note: This lib adds member variables to object's userData member (see prepareBreakableObject function)
+ * Note: This threejs-lib adds member variables to object's userData member (see prepareBreakableObject function)
  * Use with caution and read the code when using with other libs.
  *
  * @param {double} minSizeForBreak Min size a debris can have to break.

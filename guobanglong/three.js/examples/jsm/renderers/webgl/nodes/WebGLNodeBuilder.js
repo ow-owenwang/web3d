@@ -84,7 +84,7 @@ class WebGLNodeBuilder extends NodeBuilder {
 		else if ( material.isPointsNodeMaterial ) type = 'PointsNodeMaterial';
 		else if ( material.isLineBasicNodeMaterial ) type = 'LineBasicNodeMaterial';
 
-		// shader lib
+		// shader threejs-lib
 
 		if ( nodeShaderLib[ type ] !== undefined ) {
 

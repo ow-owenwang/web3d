@@ -174,7 +174,7 @@ function formatCSS(css) {
 }
 
 async function getScript(url, scriptInfos) {
-  // check it's an example script, not some other lib
+  // check it's an example script, not some other threejs-lib
   if (!scriptInfos[url].source) {
     const source = await getHTML(url);
     const fixedSource = fixSourceLinks(url, source);

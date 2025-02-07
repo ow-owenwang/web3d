@@ -2046,7 +2046,7 @@ class LDrawLoader extends Loader {
 	// in the material array if they need to be filled in.
 	applyMaterialsToMesh( group, parentColorCode, materialHierarchy, finalMaterialPass = false ) {
 
-		// find any missing materials as indicated by a color code string and replace it with a material from the current material lib
+		// find any missing materials as indicated by a color code string and replace it with a material from the current material threejs-lib
 		const loader = this;
 		const parentIsPassthrough = parentColorCode === MAIN_COLOUR_CODE;
 		group.traverse( c => {

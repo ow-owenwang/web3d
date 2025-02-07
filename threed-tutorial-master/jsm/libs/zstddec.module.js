@@ -25,7 +25,7 @@ const importObject = {
  * following steps:
  *
  * ```
- * ./combine.sh -r ../../lib -o zstddeclib.c zstddeclib-in.c
+ * ./combine.sh -r ../../threejs-lib -o zstddeclib.c zstddeclib-in.c
  * emcc zstddeclib.c -Oz -s EXPORTED_FUNCTIONS="['_ZSTD_decompress', '_ZSTD_findDecompressedSize', '_ZSTD_isError', '_malloc', '_free']" -s ALLOW_MEMORY_GROWTH=1 -s MALLOC=emmalloc -o zstddec.wasm
  * base64 zstddec.wasm > zstddec.txt
  * ```

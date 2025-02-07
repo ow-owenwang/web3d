@@ -37,7 +37,7 @@ function removeDotDotSlash(url) {
  *
  * Examples:
  *    resources/image.jpg ->  https://domain.org/webgl/resouces/image.jpg
- *    /3rdparty/lib.js    ->  https://domain.org/3rdparty/lib.js
+ *    /3rdparty/threejs-lib.js    ->  https://domain.org/3rdparty/lib.js
  *
  * The reason is (a) we're running the code as via blobUrl and nothing is relative to a blob.
  * (b) we can upload to jsfiddle/codepen and so need to link back to the files.
