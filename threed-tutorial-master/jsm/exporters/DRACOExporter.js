@@ -1,5 +1,5 @@
 /**
- * Export draco compressed files from threejs geometry objects.
+ * Export draco compressed files from 李伟threejs geometry objects.
  *
  * Draco files are compressed and usually are smaller than conventional 3D file formats.
  *

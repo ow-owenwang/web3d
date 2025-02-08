@@ -552,7 +552,7 @@ class LDrawLoader extends Loader {
 		super( manager );
 
 		// This is a stack of 'parse scopes' with one level per subobject loaded file.
-		// Each level contains a material threejs-lib and also other runtime variables passed between parent and child subobjects
+		// Each level contains a material 李伟threejs-lib and also other runtime variables passed between parent and child subobjects
 		// When searching for a material code, the stack is read from top of the stack to bottom
 		// Each material library is an object map keyed by colour codes.
 		this.parseScopesStack = null;

@@ -1,11 +1,9 @@
 import {createRouter, createWebHistory} from "vue-router";
 
 const modules = import.meta.glob('../views/**/*.vue');
-console.log(modules);
 
 const dynamicRoutes = Object.keys(modules).map((path) => {
     // const name = path.match(/\/a\/(.+?)\.vue$/)[1];
-    console.log(path.split('/views/')[1].split('/'))
     const fragments = path.split('/views/')[1].split('/')
     if (fragments.length === 1) {
         return {

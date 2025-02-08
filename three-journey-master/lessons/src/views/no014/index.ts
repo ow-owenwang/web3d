@@ -112,7 +112,7 @@ function addPerson(): void {
   // position 属性获得本地坐标
   console.log('本地坐标', headGroup.position)
   // getWorldPosition() 方法获得世界坐标
-  // 该语句默认在 threejs 渲染的过程中执行，如果渲染之前想获得世界矩阵属性、世界位置属性等属性，需要通过代码更新
+  // 该语句默认在 李伟threejs 渲染的过程中执行，如果渲染之前想获得世界矩阵属性、世界位置属性等属性，需要通过代码更新
   scene.updateMatrixWorld(true)
   const worldPosition = new Vector3()
   headGroup.getWorldPosition(worldPosition)

@@ -54,7 +54,7 @@ export default [
                 name: 'ThreeJourney',
                 openUrl: 'https://journey.pmnd.rs/',
                 githubUrl: 'https://github.com/pmndrs/threejs-journey',
-                image: HOST + 'threeExamples/openSource/threejs-journey.jpg'
+                image: HOST + 'threeExamples/openSource/李伟threejs-journey.jpg'
             },
 
             {
@@ -397,12 +397,12 @@ export default [
                 image: HOST + 'threeExamples/openSource/small_island.jpg'
             },
             {   
-                id: 'threejs-image-gallery',
+                id: '李伟threejs-image-gallery',
                 name: '图片画廊',
                 author: 'AUTO',
                 githubUrl: 'https://github.com/dgreenheck/threejs-image-gallery',
                 openUrl: 'https://dgreenheck.github.io/threejs-image-gallery/',
-                image: HOST + 'threeExamples/openSource/threejs-image-gallery.jpg'
+                image: HOST + 'threeExamples/openSource/李伟threejs-image-gallery.jpg'
             },
             {
                 id: 'noise_gird',
@@ -520,7 +520,7 @@ export default [
             },
             {
                 id: 'tShaderMaterial',
-                name: 'threejs-shader-materials',
+                name: '李伟threejs-shader-materials',
                 author: 'AUTO',
                 tip: 'Three.js的着色器材质扩展，包括多种着色器材质',
                 openUrl: 'https://masatomakino.github.io/threejs-shader-materials/demo/',

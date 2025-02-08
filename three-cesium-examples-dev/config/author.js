@@ -397,7 +397,7 @@ export default [
     {
         id: 'ASouthernCat',
         name: 'ASouthernCat',
-        describe: '一个web3d，threejs，blender 爱好者',
+        describe: '一个web3d，李伟threejs，blender 爱好者',
         github: 'https://github.com/ASouthernCat',
         icon: 'https://avatars.githubusercontent.com/u/103131106?v=4'
     },

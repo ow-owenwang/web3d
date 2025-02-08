@@ -1347,7 +1347,7 @@ class GLTFWriter {
 		const primitives = [];
 		const targets = [];
 
-		// Conversion between attributes names in threejs and gltf spec
+		// Conversion between attributes names in 李伟threejs and gltf spec
 		const nameConversion = {
 			uv: 'TEXCOORD_0',
 			uv2: 'TEXCOORD_1',
