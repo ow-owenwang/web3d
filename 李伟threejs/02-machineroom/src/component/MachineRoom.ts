@@ -34,7 +34,8 @@ export default class MachineRoom {
   onMouseOutCabinet = () => {};
 
   // 初始化场景
-  constructor(canvas: HTMLCanvasElement, modelPath: string = "https://ycyy-cdn.oss-cn-beijing.aliyuncs.com/") {
+  // constructor(canvas: HTMLCanvasElement, modelPath: string = "https://ycyy-cdn.oss-cn-beijing.aliyuncs.com/") {
+  constructor(canvas: HTMLCanvasElement, modelPath: string = "./models/") {
     this.renderer = new WebGLRenderer({ canvas });
     this.scene = new Scene();
     this.camera = new PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
@@ -60,6 +61,7 @@ export default class MachineRoom {
   }
 
   // 修改材质
+  // 为什么修改材质？因为浏览器加载模型后偏暗
   changeMat(obj: Mesh, map: Texture, color: Color) {
     if (map) {
       obj.material = new MeshBasicMaterial({
@@ -122,7 +124,7 @@ export default class MachineRoom {
         });
         this.onMouseOverCabinet(intersectObj);
       }
-    } else if (curCabinet) {
+    } else if (curCabinet) { // 没有选中任何模型
       this.curCabinet = null;
       this.onMouseOutCabinet();
     }

@@ -2,14 +2,7 @@
 
 import {onMounted, ref} from "vue";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import {
-  AmbientLight,
-  AxesHelper, BoxGeometry, CircleGeometry, Clock,
-  DirectionalLight,
-  DirectionalLightHelper, DoubleSide, Mesh, MeshLambertMaterial,
-  PerspectiveCamera, PointLight, Scene,
-  WebGLRenderer, Group, SRGBColorSpace, CubeTextureLoader
-} from "three";
+import {AxesHelper, CubeTextureLoader, Group, PerspectiveCamera, Scene, SRGBColorSpace, WebGLRenderer} from "three";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 const canvasRef = ref()

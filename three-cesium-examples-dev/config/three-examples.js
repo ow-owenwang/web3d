@@ -1861,14 +1861,14 @@ export default [
         name: '入门案例',
         children: [
             {
-                id: "入门",
-                name: "入门",
+                id: "01入门",
+                name: "01入门",
                 author: "jiawanlong",
-                codeUrl: HOST + "threeExamples/basic/入门.js",
-                image: HOST + "threeExamples/basic/入门.png",
+                codeUrl: HOST + "threeExamples/basic/01入门.js",
+                image: HOST + "threeExamples/basic/01入门.png",
                 meta: {
-                    title: "入门",
-                    keywords: "three.js,入门",
+                    title: "01入门",
+                    keywords: "three.js,01入门",
                     description: "使用three.js入门"
                 }
             },

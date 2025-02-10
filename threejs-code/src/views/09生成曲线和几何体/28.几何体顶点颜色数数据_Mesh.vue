@@ -2,31 +2,18 @@
 import {onMounted, ref} from "vue";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {
-  AmbientLight, ArcCurve,
-  AxesHelper, BoxGeometry,
+  AmbientLight,
+  AxesHelper,
   BufferAttribute,
-  BufferGeometry, CatmullRomCurve3,
-  CircleGeometry, CubicBezierCurve, CurvePath, CylinderGeometry,
+  BufferGeometry,
   DirectionalLight,
-  DoubleSide, EdgesGeometry, EllipseCurve, ExtrudeGeometry,
-  GridHelper,
-  Group, LatheGeometry, Line,
-  LineBasicMaterial, LineCurve3, LineSegments,
+  DoubleSide,
   Mesh,
   MeshBasicMaterial,
-  MeshLambertMaterial, Path,
   PerspectiveCamera,
-  PlaneGeometry,
-  Points,
-  PointsMaterial, QuadraticBezierCurve, QuadraticBezierCurve3,
-  RepeatWrapping,
-  Scene, Shape, ShapeGeometry,
-  SphereGeometry, SplineCurve,
-  SRGBColorSpace,
-  TextureLoader, Vector2, Vector3,
+  Scene,
   WebGLRenderer
 } from "three";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 function getModel() {
 

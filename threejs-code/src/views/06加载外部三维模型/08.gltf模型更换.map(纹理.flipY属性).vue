@@ -3,11 +3,12 @@ import {onMounted, ref} from "vue";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {
   AmbientLight,
-  AxesHelper, BufferAttribute, BufferGeometry, CircleGeometry, DirectionalLight, DoubleSide, GridHelper, Group,
-  Mesh, MeshBasicMaterial,
-  MeshLambertMaterial,
-  PerspectiveCamera, PlaneGeometry, RepeatWrapping, Scene,
-  SphereGeometry, SRGBColorSpace,
+  AxesHelper,
+  DirectionalLight,
+  Group,
+  PerspectiveCamera,
+  Scene,
+  SRGBColorSpace,
   TextureLoader,
   WebGLRenderer
 } from "three";

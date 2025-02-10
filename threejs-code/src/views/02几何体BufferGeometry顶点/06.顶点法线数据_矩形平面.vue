@@ -6,27 +6,14 @@ import {
   AxesHelper,
   BufferAttribute,
   BufferGeometry,
-  CircleGeometry,
   DirectionalLight,
   DoubleSide,
-  GridHelper,
-  Group, Line,
-  LineBasicMaterial,
   Mesh,
-  MeshBasicMaterial,
   MeshLambertMaterial,
   PerspectiveCamera,
-  PlaneGeometry,
-  Points,
-  PointsMaterial,
-  RepeatWrapping,
   Scene,
-  SphereGeometry,
-  SRGBColorSpace,
-  TextureLoader,
   WebGLRenderer
 } from "three";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 /*
 当你不设置法向量的时候，threejs光线无法正常计算，当你测试案例源码时候，模型可能不显示，也可能闪烁或偶然显示，总而言之，不管哪种现象，都是非正常显示。

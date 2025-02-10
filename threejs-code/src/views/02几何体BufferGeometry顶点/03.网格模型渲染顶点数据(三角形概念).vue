@@ -6,27 +6,14 @@ import {
   AxesHelper,
   BufferAttribute,
   BufferGeometry,
-  CircleGeometry,
   DirectionalLight,
   DoubleSide,
-  GridHelper,
-  Group, Line,
-  LineBasicMaterial,
   Mesh,
   MeshBasicMaterial,
-  MeshLambertMaterial,
   PerspectiveCamera,
-  PlaneGeometry,
-  Points,
-  PointsMaterial,
-  RepeatWrapping,
   Scene,
-  SphereGeometry,
-  SRGBColorSpace,
-  TextureLoader,
   WebGLRenderer
 } from "three";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 function getModel() {
 
