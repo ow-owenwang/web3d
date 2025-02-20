@@ -87,7 +87,7 @@ function initVertexBuffers(gl) {
     return;
   }
 
-  // Pass the width and hight of the <canvas>
+  // Pass the width and height of the <canvas>
   gl.uniform1f(u_Width, gl.drawingBufferWidth);
   gl.uniform1f(u_Height, gl.drawingBufferHeight);
 

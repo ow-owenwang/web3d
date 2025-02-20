@@ -14,8 +14,9 @@ import {
 import { createViewer } from "../../utils";
 
 onMounted(async () => {
+    // 最简单案例
     const viewer = createViewer()
-    
+
 });
 </script>
 <style scoped>
