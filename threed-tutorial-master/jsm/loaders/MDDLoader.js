@@ -1,5 +1,5 @@
 /**
- * MDD is a special format that stores a position for every vertex in a model for every frame in an animation.
+ * MDD is a special format that stores a position for every vertex in a models for every frame in an animation.
  * Similar to BVH, it can be used to transfer animation data between different 3D applications or engines.
  *
  * MDD stores its data in binary format (big endian) in the following way:

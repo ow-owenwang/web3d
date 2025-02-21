@@ -37,7 +37,7 @@ viewer.entities.add({
 
     model: {
 
-        uri: HOST + '/files/model/car.glb',
+        uri: HOST + '/files/models/car.glb',
 
         minimumPixelSize: 128,
 

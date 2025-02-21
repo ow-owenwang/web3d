@@ -42,7 +42,7 @@ function init() {
   // light
   initLight();
 
-  // model
+  // models
   initModel();
 
   // event
@@ -55,7 +55,7 @@ function initLight() {
   scene.add(light);
 }
 
-// model
+// models
 function initModel() {
   const cubeShader = {
     uniforms: {

@@ -65,9 +65,9 @@ function main() {
   modelMatrix.setTranslate(0.75, 0, 0);
   viewMatrix.setLookAt(0, 0, 5, 0, 0, -100, 0, 1, 0);
   projMatrix.setPerspective(30, canvas.width/canvas.height, 1, 100);
-  // Calculate the model view projection matrix
+  // Calculate the models view projection matrix
   mvpMatrix.set(projMatrix).multiply(viewMatrix).multiply(modelMatrix);
-  // Pass the model view projection matrix
+  // Pass the models view projection matrix
   gl.uniformMatrix4fv(u_mvpMatrix, false, mvpMatrix.elements);
 
   // Clear color and depth buffer
@@ -75,11 +75,11 @@ function main() {
 
   gl.drawArrays(gl.TRIANGLES, 0, n);   // Draw the triangles
 
-  // Prepare the model matrix for another pair of triangles
+  // Prepare the models matrix for another pair of triangles
   modelMatrix.setTranslate(-0.75, 0, 0);
-  // Calculate the model view projection matrix
+  // Calculate the models view projection matrix
   mvpMatrix.set(projMatrix).multiply(viewMatrix).multiply(modelMatrix);
-  // Pass the model view projection matrix to u_MvpMatrix
+  // Pass the models view projection matrix to u_MvpMatrix
   gl.uniformMatrix4fv(u_mvpMatrix, false, mvpMatrix.elements);
 
   gl.drawArrays(gl.TRIANGLES, 0, n);   // Draw the triangles

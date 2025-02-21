@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import gsap from "gsap";
+
 export default function modifyCityMaterial(mesh) {
   mesh.material.onBeforeCompile = (shader) => {
     // console.log(shader.vertexShader);

@@ -341,11 +341,11 @@ var g_modelMatrix = new Matrix4();
 var g_mvpMatrix = new Matrix4();
 
 function drawTexturedCube(gl, program, o, angle, texture, viewProjMatrix) {
-  // Calculate a model matrix
+  // Calculate a models matrix
   g_modelMatrix.setRotate(20.0, 1.0, 0.0, 0.0);
   g_modelMatrix.rotate(angle, 0.0, 1.0, 0.0);
 
-  // Calculate the model view project matrix and pass it to u_MvpMatrix
+  // Calculate the models view project matrix and pass it to u_MvpMatrix
   g_mvpMatrix.set(viewProjMatrix);
   g_mvpMatrix.multiply(g_modelMatrix);
   gl.uniformMatrix4fv(program.u_MvpMatrix, false, g_mvpMatrix.elements);
@@ -354,12 +354,12 @@ function drawTexturedCube(gl, program, o, angle, texture, viewProjMatrix) {
 }
 
 function drawTexturedPlane(gl, program, o, angle, texture, viewProjMatrix) {
-  // Calculate a model matrix
+  // Calculate a models matrix
   g_modelMatrix.setTranslate(0, 0, 1);
   g_modelMatrix.rotate(20.0, 1.0, 0.0, 0.0);
   g_modelMatrix.rotate(angle, 0.0, 1.0, 0.0);
 
-  // Calculate the model view project matrix and pass it to u_MvpMatrix
+  // Calculate the models view project matrix and pass it to u_MvpMatrix
   g_mvpMatrix.set(viewProjMatrix);
   g_mvpMatrix.multiply(g_modelMatrix);
   gl.uniformMatrix4fv(program.u_MvpMatrix, false, g_mvpMatrix.elements);
@@ -389,12 +389,12 @@ function initAttributeVariable(gl, a_attribute, buffer) {
 }
 
 function drawTexturedCube2(gl, o, angle, texture, viewpProjMatrix, u_MvpMatrix) {
-  // Calculate a model matrix
+  // Calculate a models matrix
   g_modelMatrix.rotate(20.0, 1.0, 0.0, 0.0);
   g_modelMatrix.rotate(angle, 0.0, 1.0, 0.0);
   g_modelMatrix.scale(1, 1, 1);
 
-  // Calculate the model view project matrix and pass it to u_MvpMatrix
+  // Calculate the models view project matrix and pass it to u_MvpMatrix
   g_mvpMatrix.set(vpMatrix);
   g_mvpMatrix.multiply(g_modelMatrix);
   gl.uniformMatrix4fv(u_MvpMatrix, false, g_mvpMatrix.elements);

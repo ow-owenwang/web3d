@@ -12,7 +12,7 @@ var VSHADER_SOURCE =
   'varying vec4 v_Color;\n' +
   'void main() {\n' +
   '  gl_Position = u_MvpMatrix * a_Position;\n' +
-     // Recalculate the normal based on the model matrix and make its length 1.
+     // Recalculate the normal based on the models matrix and make its length 1.
   '  vec3 normal = normalize(vec3(u_NormalMatrix * a_Normal));\n' +
      // Calculate the dot product of the light direction and the orientation of a surface (the normal)
   '  float nDotL = max(dot(u_LightDirection, normal), 0.0);\n' +
@@ -86,17 +86,17 @@ function main() {
   var mvpMatrix = new Matrix4();    // Model view projection matrix
   var normalMatrix = new Matrix4(); // Transformation matrix for normals
 
-  // Calculate the model matrix
+  // Calculate the models matrix
   modelMatrix.setTranslate(0, 0.9, 0); // Translate to the y-axis direction
   modelMatrix.rotate(90, 0, 0, 1);     // Rotate 90 degree around the z-axis
   // Calculate the view projection matrix
   mvpMatrix.setPerspective(30, canvas.width/canvas.height, 1, 100);
   mvpMatrix.lookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
   mvpMatrix.multiply(modelMatrix);
-  // Pass the model view projection matrix to u_MvpMatrix
+  // Pass the models view projection matrix to u_MvpMatrix
   gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 
-  // Calculate the matrix to transform the normal based on the model matrix
+  // Calculate the matrix to transform the normal based on the models matrix
   normalMatrix.setInverseOf(modelMatrix);
   normalMatrix.transpose();
   // Pass the transformation matrix for normals to u_NormalMatrix

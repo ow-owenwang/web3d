@@ -1327,7 +1327,7 @@ export default [
                 image: HOST + 'threeExamples/application/punk.jpg',
             },
             {
-                id: 'white model',
+                id: 'white models',
                 name: '随机城市白膜',
                 author: 'nico',
                 codeUrl: HOST + 'threeExamples/application/white_model.js',

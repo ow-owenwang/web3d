@@ -315,7 +315,7 @@ function drawSegment(gl, n, buffer, viewProjMatrix, a_Position, u_MvpMatrix, u_N
   // Enable the assignment of the buffer object to the attribute variable
   gl.enableVertexAttribArray(a_Position);
 
-  // Calculate the model view project matrix and pass it to u_MvpMatrix
+  // Calculate the models view project matrix and pass it to u_MvpMatrix
   g_mvpMatrix.set(viewProjMatrix);
   g_mvpMatrix.multiply(g_modelMatrix);
   gl.uniformMatrix4fv(u_MvpMatrix, false, g_mvpMatrix.elements);

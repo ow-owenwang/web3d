@@ -112,8 +112,8 @@ function main() {
   viewProjMatrix.lookAt(0.0, 7.0, 9.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
   var currentAngle = 0.0; // Current rotation angle (degrees)
-  var mvpMatrixFromLight_t = new Matrix4(); // A model view projection matrix from light source (for triangle)
-  var mvpMatrixFromLight_p = new Matrix4(); // A model view projection matrix from light source (for plane)
+  var mvpMatrixFromLight_t = new Matrix4(); // A models view projection matrix from light source (for triangle)
+  var mvpMatrixFromLight_p = new Matrix4(); // A models view projection matrix from light source (for plane)
   var tick = function() {
     currentAngle = animate(currentAngle);
 
@@ -149,13 +149,13 @@ function main() {
 var g_modelMatrix = new Matrix4();
 var g_mvpMatrix = new Matrix4();
 function drawTriangle(gl, program, triangle, angle, viewProjMatrix) {
-  // Set rotate angle to model matrix and draw triangle
+  // Set rotate angle to models matrix and draw triangle
   g_modelMatrix.setRotate(angle, 0, 1, 0);
   draw(gl, program, triangle, viewProjMatrix);
 }
 
 function drawPlane(gl, program, plane, viewProjMatrix) {
-  // Set rotate angle to model matrix and draw plane
+  // Set rotate angle to models matrix and draw plane
   g_modelMatrix.setRotate(-45, 0, 1, 1);
   draw(gl, program, plane, viewProjMatrix);
 }
@@ -167,7 +167,7 @@ function draw(gl, program, o, viewProjMatrix) {
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, o.indexBuffer);
 
-  // Calculate the model view project matrix and pass it to u_MvpMatrix
+  // Calculate the models view project matrix and pass it to u_MvpMatrix
   g_mvpMatrix.set(viewProjMatrix);
   g_mvpMatrix.multiply(g_modelMatrix);
   gl.uniformMatrix4fv(program.u_MvpMatrix, false, g_mvpMatrix.elements);

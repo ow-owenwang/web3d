@@ -1,27 +1,37 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import gsap from "gsap";
-import * as dat from "dat.gui";
-
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 // 导入water
-import { Water } from "three/examples/jsm/objects/Water2";
+import {Water} from "three/examples/jsm/objects/Water2";
+import {
+  ACESFilmicToneMapping,
+  AmbientLight,
+  AxesHelper,
+  Clock,
+  DirectionalLight,
+  DoubleSide,
+  EquirectangularReflectionMapping,
+  PerspectiveCamera,
+  Scene,
+  SRGBColorSpace,
+  Vector2,
+  WebGLRenderer
+} from "three";
+
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
 
   // console.log(THREE);
   // 初始化场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 创建透视相机
-  const camera = new THREE.PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     90,
     window.innerHeight / window.innerHeight,
     0.1,
@@ -37,13 +47,13 @@ onMounted(() => {
   scene.add(camera);
 
   // 加入辅助轴，帮助我们查看3维坐标轴
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
 
-  // const water = new Water(new THREE.PlaneBufferGeometry(1, 1, 1024, 1024), {
+  // const water = new Water(new PlaneBufferGeometry(1, 1, 1024, 1024), {
   //   color: "#ffffff",
   //   scale: 1,
-  //   flowDirection: new THREE.Vector2(1, 1),
+  //   flowDirection: new Vector2(1, 1),
   //   textureHeight: 1024,
   //   textureWidth: 1024,
   // });
@@ -53,24 +63,24 @@ onMounted(() => {
 
   // 加载场景背景
   const rgbeLoader = new RGBELoader();
-  rgbeLoader.loadAsync("/050.hdr").then((texture) => {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
+  rgbeLoader.loadAsync("/blouberg_sunrise_2_1k.hdr").then((texture) => {
+    texture.mapping = EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
   });
 
   // 加载浴缸
   const gltfLoader = new GLTFLoader();
-  gltfLoader.load("/model/yugang.glb", (gltf) => {
+  gltfLoader.load("/models/yugang.glb", (gltf) => {
     console.log(gltf);
     const yugang = gltf.scene.children[0];
-    yugang.material.side = THREE.DoubleSide;
+    yugang.material.side = DoubleSide;
 
     const waterGeometry = gltf.scene.children[1].geometry;
     const water = new Water(waterGeometry, {
       color: "#ffffff",
       scale: 1,
-      flowDirection: new THREE.Vector2(1, 1),
+      flowDirection: new Vector2(1, 1),
       textureHeight: 1024,
       textureWidth: 1024,
     });
@@ -79,16 +89,17 @@ onMounted(() => {
     scene.add(yugang);
   });
 
-  const light = new THREE.AmbientLight(0xffffff); // soft white light
+  const light = new AmbientLight(0xffffff); // soft white light
   light.intensity = 10;
   scene.add(light);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  const directionalLight = new DirectionalLight(0xffffff, 0.5);
   scene.add(directionalLight);
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.value, alpha: true, antialias: true });
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  const renderer = new WebGLRenderer({ canvas: canvasRef.value, alpha: true, antialias: true });
+  // renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace
+  renderer.toneMapping = ACESFilmicToneMapping;
 
   // 设置渲染尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -115,7 +126,7 @@ onMounted(() => {
   // 设置控制器阻尼
   controls.enableDamping = true;
 
-  const clock = new THREE.Clock();
+  const clock = new Clock();
   function animate() {
     const elapsedTime = clock.getElapsedTime();
     requestAnimationFrame(animate);

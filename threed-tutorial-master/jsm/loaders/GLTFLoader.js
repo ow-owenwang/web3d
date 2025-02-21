@@ -134,7 +134,7 @@ class GLTFLoader extends Loader {
 		}
 
 		// Tells the LoadingManager to track an extra item, which resolves after
-		// the model is fully loaded. This means the count of items loaded will
+		// the models is fully loaded. This means the count of items loaded will
 		// be incorrect, but ensures manager.onLoad() does not fire early.
 		this.manager.itemStart( url );
 
@@ -2135,7 +2135,7 @@ class GLTFParser {
 	 * be marked. Non-scenegraph resources (like Materials, Geometries, and
 	 * Textures) can be reused directly and are not marked here.
 	 *
-	 * Example: CesiumMilkTruck sample model reuses "Wheel" meshes.
+	 * Example: CesiumMilkTruck sample models reuses "Wheel" meshes.
 	 */
 	_addNodeRef( cache, index ) {
 

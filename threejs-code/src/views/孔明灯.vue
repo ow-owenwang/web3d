@@ -1,30 +1,32 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-
-import * as THREE from "three";
-
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {onMounted, ref} from "vue";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import gsap from "gsap";
-import * as dat from "dat.gui";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {
+  ACESFilmicToneMapping,
+  Clock,
+  DoubleSide,
+  EquirectangularReflectionMapping,
+  PerspectiveCamera,
+  Scene,
+  ShaderMaterial,
+  SRGBColorSpace,
+  WebGLRenderer
+} from "three";
 
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 const canvasRef = ref();
 
 onMounted(() => {
-  //创建gui对象
-  const gui = new dat.GUI();
-
-  // console.log(THREE);
-  // 初始化场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 创建透视相机
-  const camera = new THREE.PerspectiveCamera(
-    90,
-    window.innerHeight / window.innerHeight,
-    0.1,
-    1000
+  const camera = new PerspectiveCamera(
+      90,
+      window.innerHeight / window.innerHeight,
+      0.1,
+      1000
   );
   // 设置相机位置
   // object3d具有position，属性是1个3维的向量
@@ -36,21 +38,19 @@ onMounted(() => {
   scene.add(camera);
 
   // 加入辅助轴，帮助我们查看3维坐标轴
-  // const axesHelper = new THREE.AxesHelper(5);
+  // const axesHelper = new AxesHelper(5);
   // scene.add(axesHelper);
-
-  // 加载纹理
 
   // 创建纹理加载器对象
   const rgbeLoader = new RGBELoader();
   rgbeLoader.loadAsync("/2k.hdr").then((texture) => {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
+    texture.mapping = EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
   });
 
   // 创建着色器材质;
-  const shaderMaterial = new THREE.ShaderMaterial({
+  const shaderMaterial = new ShaderMaterial({
     vertexShader: `
     precision lowp float;
 
@@ -91,24 +91,25 @@ void main(){
 }
     `,
     uniforms: {},
-    side: THREE.DoubleSide,
+    side: DoubleSide,
     //   transparent: true,
   });
 
-  // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
+  const renderer = new WebGLRenderer({canvas: canvasRef.value, alpha: true});
   // renderer.shadowMap.enabled = true;
-  // renderer.shadowMap.type = THREE.BasicShadowMap;
-  // renderer.shadowMap.type = THREE.VSMShadowMap;
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  // renderer.toneMapping = THREE.LinearToneMapping;
-  // renderer.toneMapping = THREE.ReinhardToneMapping;
-  // renderer.toneMapping = THREE.CineonToneMapping;
+  // renderer.shadowMap.type = BasicShadowMap;
+  // renderer.shadowMap.type = VSMShadowMap;
+  // renderer.outputEncoding = sRGBEncoding; // 最新版移除
+  renderer.outputColorSpace = SRGBColorSpace
+  renderer.toneMapping = ACESFilmicToneMapping;
+  // renderer.toneMapping = LinearToneMapping;
+  // renderer.toneMapping = ReinhardToneMapping;
+  // renderer.toneMapping = CineonToneMapping;
   renderer.toneMappingExposure = 0.2;
 
   const gltfLoader = new GLTFLoader();
   let LightBox = null;
+  // TODO: 与效果不符
   gltfLoader.load("/model/flyLight.glb", (gltf) => {
     console.log(gltf);
 
@@ -167,7 +168,8 @@ void main(){
   controls.maxPolarAngle = (Math.PI / 3) * 2;
   controls.minPolarAngle = (Math.PI / 3) * 2;
 
-  const clock = new THREE.Clock();
+  const clock = new Clock();
+
   function animate() {
     controls.update();
     const elapsedTime = clock.getElapsedTime();

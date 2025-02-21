@@ -93,20 +93,20 @@ function main() {
   var mvpMatrix = new Matrix4();    // Model view projection matrix
   var normalMatrix = new Matrix4(); // Transformation matrix for normals
 
-  // Calculate the model matrix
+  // Calculate the models matrix
   modelMatrix.setRotate(90, 0, 1, 0); // Rotate around the y-axis
   // Calculate the view projection matrix
   mvpMatrix.setPerspective(30, canvas.width/canvas.height, 1, 100);
   mvpMatrix.lookAt(6, 6, 14, 0, 0, 0, 0, 1, 0);
   mvpMatrix.multiply(modelMatrix);
-  // Calculate the matrix to transform the normal based on the model matrix
+  // Calculate the matrix to transform the normal based on the models matrix
   normalMatrix.setInverseOf(modelMatrix);
   normalMatrix.transpose();
 
-  // Pass the model matrix to u_ModelMatrix
+  // Pass the models matrix to u_ModelMatrix
   gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);
 
-  // Pass the model view projection matrix to u_mvpMatrix
+  // Pass the models view projection matrix to u_mvpMatrix
   gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 
   // Pass the transformation matrix for normals to u_NormalMatrix

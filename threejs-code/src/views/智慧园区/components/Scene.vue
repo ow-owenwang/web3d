@@ -3,18 +3,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import * as THREE from "three";
-import gsap from "gsap";
+import {onMounted, ref} from "vue";
 
 // 导入gui对象
-import gui from "@/three/gui";
 // 导入场景
 import scene from "@/three/scene";
 
 import cameraModule from "@/three/camera";
 // 导入控制器
-import controls from "@/three/controls";
 // 导入辅助坐标轴
 import axesHelper from "@/three/axesHelper";
 // 导入渲染器
@@ -26,8 +22,6 @@ import createMesh from "@/three/createMesh";
 
 // 导入每一帧的执行函数
 import animate from "@/three/animate";
-
-import eventHub from "@/utils/eventHub";
 
 // 场景元素div
 let sceneDiv = ref(null);

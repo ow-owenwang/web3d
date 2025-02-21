@@ -59,7 +59,7 @@ function start(canvas) {
     return;
   }
 
-  var modelMatrix = new Matrix4();   // Create a model matrix
+  var modelMatrix = new Matrix4();   // Create a models matrix
   
   var tick = function() {    // Start drawing
     g_currentAngle = animate(g_currentAngle);                // Update current rotation angle

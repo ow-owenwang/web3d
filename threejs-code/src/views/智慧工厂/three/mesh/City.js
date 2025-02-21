@@ -1,11 +1,10 @@
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import gsap from "gsap";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
 import cameraModule from "../camera";
-import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
+import {CSS3DObject} from "three/examples/jsm/renderers/CSS3DRenderer";
 import eventHub from "@/utils/eventHub";
-import { ShaderMaterial } from "three";
 import fragmentShader from "@/shader/fighter/fragmentShader.glsl";
 import vertexShader from "@/shader/fighter/vertexShader.glsl";
 

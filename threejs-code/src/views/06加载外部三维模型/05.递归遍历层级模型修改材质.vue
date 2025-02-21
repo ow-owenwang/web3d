@@ -29,7 +29,7 @@ function getModel() {
 //             console.log('gltf默认材质',obj.material);
 //         }
 //     });
-//     model.add(gltf.scene);
+//     models.add(gltf.scene);
 // })
 
   loader.load("/工厂.glb", function (gltf) {

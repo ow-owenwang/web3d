@@ -1,7 +1,5 @@
 import * as THREE from "three";
 import gsap from "gsap";
-import vertex from "@/shader/gradColor/vertex.glsl";
-import fragment from "@/shader/gradColor/fragment.glsl";
 
 export default function modifyCityMaterial(mesh) {
   mesh.material.onBeforeCompile = (shader) => {

@@ -87,7 +87,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import eventHub from "@/utils/eventHub";
 
 const showWall = () => {

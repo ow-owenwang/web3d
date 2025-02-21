@@ -1913,7 +1913,7 @@ class LDrawLoader extends Loader {
 
 			// Load the subobject
 			// Use another file loader here so we can keep track of the subobject information
-			// and use it when processing the next model.
+			// and use it when processing the next models.
 			const fileLoader = new FileLoader( scope.manager );
 			fileLoader.setPath( scope.path );
 			fileLoader.setRequestHeader( scope.requestHeader );

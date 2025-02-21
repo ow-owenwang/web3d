@@ -79,12 +79,12 @@ function main() {
   var tick = function() {
     currentAngle = animate(currentAngle);  // Update the rotation angle
 
-    // Calculate the model matrix
+    // Calculate the models matrix
     modelMatrix.setRotate(currentAngle, 0, 1, 0); // Rotate around the y-axis
     mvpMatrix.set(vpMatrix).multiply(modelMatrix);
     gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 
-    // Pass the matrix to transform the normal based on the model matrix to u_NormalMatrix
+    // Pass the matrix to transform the normal based on the models matrix to u_NormalMatrix
     normalMatrix.setInverseOf(modelMatrix);
     normalMatrix.transpose();
     gl.uniformMatrix4fv(u_NormalMatrix, false, normalMatrix.elements);

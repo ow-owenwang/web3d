@@ -1,40 +1,41 @@
 <script setup lang="ts">
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {onMounted, ref} from "vue";
 import {
-  CSS2DRenderer,
-  CSS2DObject,
-} from "three/examples/jsm/renderers/CSS2DRenderer.js";
-import gsap from "gsap";
-import * as dat from "dat.gui";
-import { onMounted, ref } from "vue";
+  ACESFilmicToneMapping,
+  AxesHelper,
+  BoxGeometry,
+  Clock,
+  Mesh,
+  MeshBasicMaterial,
+  PerspectiveCamera,
+  Raycaster,
+  Scene,
+  Vector2,
+  WebGLRenderer
+} from "three";
 
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
-  // 1、创建场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
-  // 2、创建相机
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    300
+  const camera = new PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      300
   );
 
-  const textureLoader = new THREE.TextureLoader();
-  const particlesTexture = textureLoader.load("/textures/particles/1.png");
   // 设置相机位置
   camera.position.set(0, 0, 20);
   scene.add(camera);
 
-  const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({
+  const cubeGeometry = new BoxGeometry(1, 1, 1);
+  const material = new MeshBasicMaterial({
     wireframe: true,
   });
-  const redMaterial = new THREE.MeshBasicMaterial({
+  const redMaterial = new MeshBasicMaterial({
     color: "#ff0000",
   });
 
@@ -43,7 +44,7 @@ onMounted(() => {
   for (let i = -5; i < 5; i++) {
     for (let j = -5; j < 5; j++) {
       for (let z = -5; z < 5; z++) {
-        const cube = new THREE.Mesh(cubeGeometry, material);
+        const cube = new Mesh(cubeGeometry, material);
         cube.position.set(i, j, z);
         scene.add(cube);
         cubeArr.push(cube);
@@ -52,12 +53,11 @@ onMounted(() => {
   }
 
   // 创建投射光线对象
-  const raycaster = new THREE.Raycaster();
+  const raycaster = new Raycaster();
 
   // 鼠标的位置对象
-  const mouse = new THREE.Vector2();
+  const mouse = new Vector2();
 
-  // 监听鼠标的位置
   // window.addEventListener("mousemove", (event) => {
   //   //   console.log(event);
   //   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -71,7 +71,6 @@ onMounted(() => {
   //   });
   // });
 
-  // 监听鼠标的位置
   window.addEventListener("click", (event) => {
     //   console.log(event);
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -85,15 +84,15 @@ onMounted(() => {
     });
   });
 
-  // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({
+  const renderer = new WebGLRenderer({
     canvas: canvasRef.value
   });
-  // 设置渲染的尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
   // 开启场景中的阴影贴图
   renderer.shadowMap.enabled = true;
-  renderer.physicallyCorrectLights = true;
+  // renderer.physicallyCorrectLights = true; // 最新版已移除
+  // 设置色调映射为物理正确的模式
+  renderer.toneMapping = ACESFilmicToneMapping; // 是否需要设置？
 
   // // 使用渲染器，通过相机将场景渲染进来
   // renderer.render(scene, camera);
@@ -104,10 +103,10 @@ onMounted(() => {
   controls.enableDamping = true;
 
   // 添加坐标轴辅助器
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
   // 设置时钟
-  const clock = new THREE.Clock();
+  const clock = new Clock();
 
   function render() {
     let time = clock.getElapsedTime();

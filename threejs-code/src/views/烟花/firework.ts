@@ -1,23 +1,32 @@
-import * as Three from "three";
 import startPointFragment from "./shaders/startpoint/fragment.glsl";
 import startPointVertex from "./shaders/startpoint/vertex.glsl";
 import fireworksFragment from "./shaders/fireworks/fragment.glsl";
 import fireworksVertex from "./shaders/fireworks/vertex.glsl";
+import {
+  AdditiveBlending,
+  AudioLoader,
+  BufferAttribute,
+  BufferGeometry,
+  Clock,
+  Color,
+  Points,
+  ShaderMaterial
+} from "three";
 
 export default class Fireworks {
   constructor(color, to, from = { x: 0, y: 0, z: 0 }) {
     // console.log("创建烟花：", color, to);
-    this.color = new Three.Color(color);
+    this.color = new Color(color);
 
     // 创建烟花发射的球点
-    this.startGeometry = new Three.BufferGeometry();
+    this.startGeometry = new BufferGeometry();
     const startPositionArray = new Float32Array(3);
     startPositionArray[0] = from.x;
     startPositionArray[1] = from.y;
     startPositionArray[2] = from.z;
     this.startGeometry.setAttribute(
       "position",
-      new Three.BufferAttribute(startPositionArray, 3)
+      new BufferAttribute(startPositionArray, 3)
     );
 
     const astepArray = new Float32Array(3);
@@ -26,15 +35,15 @@ export default class Fireworks {
     astepArray[2] = to.z - from.x;
     this.startGeometry.setAttribute(
       "aStep",
-      new Three.BufferAttribute(astepArray, 3)
+      new BufferAttribute(astepArray, 3)
     );
 
     // 设置着色器材质
-    this.startMaterial = new Three.ShaderMaterial({
+    this.startMaterial = new ShaderMaterial({
       vertexShader: startPointVertex,
       fragmentShader: startPointFragment,
       transparent: true,
-      blending: Three.AdditiveBlending,
+      blending: AdditiveBlending,
       depthWrite: false,
       uniforms: {
         uTime: {
@@ -49,13 +58,13 @@ export default class Fireworks {
 
     // console.log(this.startGeometry);
     // 创建烟花点球
-    this.startPoint = new Three.Points(this.startGeometry, this.startMaterial);
+    this.startPoint = new Points(this.startGeometry, this.startMaterial);
 
     // 开始计时
-    this.clock = new Three.Clock();
+    this.clock = new Clock();
 
     // 创建爆炸的烟花
-    this.fireworkGeometry = new Three.BufferGeometry();
+    this.fireworkGeometry = new BufferGeometry();
     this.FireworksCount = 180 + Math.floor(Math.random() * 180);
     const positionFireworksArray = new Float32Array(this.FireworksCount * 3);
     const scaleFireArray = new Float32Array(this.FireworksCount);
@@ -85,18 +94,18 @@ export default class Fireworks {
     }
     this.fireworkGeometry.setAttribute(
       "position",
-      new Three.BufferAttribute(positionFireworksArray, 3)
+      new BufferAttribute(positionFireworksArray, 3)
     );
     this.fireworkGeometry.setAttribute(
       "aScale",
-      new Three.BufferAttribute(scaleFireArray, 1)
+      new BufferAttribute(scaleFireArray, 1)
     );
     this.fireworkGeometry.setAttribute(
       "aRandom",
-      new Three.BufferAttribute(directionArray, 3)
+      new BufferAttribute(directionArray, 3)
     );
 
-    this.fireworksMaterial = new Three.ShaderMaterial({
+    this.fireworksMaterial = new ShaderMaterial({
       uniforms: {
         uTime: {
           value: 0,
@@ -107,25 +116,25 @@ export default class Fireworks {
         uColor: { value: this.color },
       },
       transparent: true,
-      blending: Three.AdditiveBlending,
+      blending: AdditiveBlending,
       depthWrite: false,
       vertexShader: fireworksVertex,
       fragmentShader: fireworksFragment,
     });
 
-    this.fireworks = new Three.Points(
+    this.fireworks = new Points(
       this.fireworkGeometry,
       this.fireworksMaterial
     );
 
     // 创建音频
-    this.linstener = new Three.AudioListener();
-    this.linstener1 = new Three.AudioListener();
-    this.sound = new Three.Audio(this.linstener);
-    this.sendSound = new Three.Audio(this.linstener1);
+    this.linstener = new AudioListener();
+    this.linstener1 = new AudioListener();
+    this.sound = new Audio(this.linstener);
+    this.sendSound = new Audio(this.linstener1);
 
     // 创建音频加载器
-    const audioLoader = new Three.AudioLoader();
+    const audioLoader = new AudioLoader();
     audioLoader.load(
       `./assets/audio/pow${Math.floor(Math.random() * 4) + 1}.ogg`,
       (buffer) => {

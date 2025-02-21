@@ -171,7 +171,7 @@ function check(gl, n, x, y, currentAngle, u_Clicked, viewProjMatrix, u_MvpMatrix
 
 var g_MvpMatrix = new Matrix4(); // Model view projection matrix
 function draw(gl, n, currentAngle, viewProjMatrix, u_MvpMatrix) {
-  // Caliculate The model view projection matrix and pass it to u_MvpMatrix
+  // Caliculate The models view projection matrix and pass it to u_MvpMatrix
   g_MvpMatrix.set(viewProjMatrix);
   g_MvpMatrix.rotate(currentAngle, 1.0, 0.0, 0.0); // Rotate appropriately
   g_MvpMatrix.rotate(currentAngle, 0.0, 1.0, 0.0);

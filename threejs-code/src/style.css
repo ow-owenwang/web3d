@@ -22,6 +22,7 @@ canvas {
 
 a {
     color: #333;
+    text-decoration: none;
 }
 
 .label {

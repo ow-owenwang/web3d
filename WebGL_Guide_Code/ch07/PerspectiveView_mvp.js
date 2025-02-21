@@ -58,7 +58,7 @@ function main() {
     return;
   }
 
-  var modelMatrix = new Matrix4(); // The model matrix
+  var modelMatrix = new Matrix4(); // The models matrix
   var viewMatrix = new Matrix4();  // The view matrix
   var projMatrix = new Matrix4();  // The projection matrix
 
@@ -66,7 +66,7 @@ function main() {
   modelMatrix.setTranslate(0.75, 0, 0);  // Translate 0.75 units along the positive x-axis
   viewMatrix.setLookAt(0, 0, 5, 0, 0, -100, 0, 1, 0);
   projMatrix.setPerspective(30, canvas.width/canvas.height, 1, 100);
-  // Pass the model, view, and projection matrix to the uniform variable respectively
+  // Pass the models, view, and projection matrix to the uniform variable respectively
   gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);
   gl.uniformMatrix4fv(u_ViewMatrix, false, viewMatrix.elements);
   gl.uniformMatrix4fv(u_ProjMatrix, false, projMatrix.elements);
@@ -75,9 +75,9 @@ function main() {
 
   gl.drawArrays(gl.TRIANGLES, 0, n);   // Draw the triangles
 
-  // Prepare the model matrix for another pair of triangles
+  // Prepare the models matrix for another pair of triangles
   modelMatrix.setTranslate(-0.75, 0, 0); // Translate 0.75 units along the negative x-axis
-  // Modify only the model matrix
+  // Modify only the models matrix
   gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);
 
   gl.drawArrays(gl.TRIANGLES, 0, n);   // Draw the triangles

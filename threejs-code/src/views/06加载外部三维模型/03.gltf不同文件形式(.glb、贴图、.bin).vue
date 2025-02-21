@@ -21,11 +21,11 @@ function getModel() {
 
 // 单独.gltf文件
 // loader.load("../../工厂.gltf", function (gltf) { 
-//     model.add(gltf.scene);
+//     models.add(gltf.scene);
 // })
 // 单独.glb文件
 // loader.load("../../工厂.glb", function (gltf) { 
-//     model.add(gltf.scene);
+//     models.add(gltf.scene);
 // })
 // .gltf + .bin + 贴图文件
   loader.load("/工厂/工厂.gltf", function (gltf) {

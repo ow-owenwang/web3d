@@ -1,34 +1,38 @@
 <script setup lang="ts">
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import {
-  CSS2DRenderer,
-  CSS2DObject,
-} from "three/examples/jsm/renderers/CSS2DRenderer.js";
-import gsap from "gsap";
-import * as dat from "dat.gui";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+  AxesHelper,
+  BoxGeometry,
+  Clock,
+  EquirectangularReflectionMapping,
+  Layers,
+  Mesh,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
+  PerspectiveCamera,
+  Scene,
+  SphereGeometry,
+  TorusKnotGeometry,
+  Vector2,
+  WebGLRenderer
+} from "three";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader.js";
-import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
+import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer.js";
+import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass.js";
+import {OutlinePass} from "three/examples/jsm/postprocessing/OutlinePass.js";
 
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
 
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
-  // 1、创建场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 2、创建相机
-  const camera = new THREE.PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -44,19 +48,16 @@ onMounted(() => {
 
   // 灯光
   // 环境光
-  // const light = new THREE.AmbientLight(0xffffff, 1); // soft white light
+  // const light = new AmbientLight(0xffffff, 1); // soft white light
   // scene.add(light);
 
   // 添加hdr环境纹理
   const loader = new RGBELoader();
   loader.load("/textures/Dosch-Space_0026_4k.hdr", function (texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
+    texture.mapping = EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
   });
-
-  // 加载纹理
-  const textureLoader = new THREE.TextureLoader();
 
   // 加载压缩的glb模型
   let material = null;
@@ -67,40 +68,40 @@ onMounted(() => {
   dracoLoader.preload();
   gltfLoader.setDRACOLoader(dracoLoader);
   let mixer;
-  gltfLoader.load("/model/jianshen-min.glb", function (gltf) {
+  gltfLoader.load("/models/jianshen-min.glb", function (gltf) {
     // console.log(gltf);
   });
 
   // 创建一个金属球添加到场景中
-  const geometry = new THREE.SphereGeometry(1, 32, 32);
-  const material1 = new THREE.MeshBasicMaterial({
+  const geometry = new SphereGeometry(1, 32, 32);
+  const material1 = new MeshBasicMaterial({
     color: "#ffaa33",
   });
-  const sphere = new THREE.Mesh(geometry, material1);
+  const sphere = new Mesh(geometry, material1);
   sphere.position.set(-5, 0, 0);
   sphere.layers.set(1);
   scene.add(sphere);
 
   // 创建一个正方体
-  const geometry2 = new THREE.BoxGeometry(1, 1, 1);
-  const material2 = new THREE.MeshStandardMaterial({
+  const geometry2 = new BoxGeometry(1, 1, 1);
+  const material2 = new MeshStandardMaterial({
     emissive: 0x33ff33,
   });
-  const cube = new THREE.Mesh(geometry2, material2);
+  const cube = new Mesh(geometry2, material2);
   cube.position.set(5, 0, 0);
   scene.add(cube);
 
   // 创建一个纽结体
-  const geometry3 = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-  const material3 = new THREE.MeshStandardMaterial({
+  const geometry3 = new TorusKnotGeometry(1, 0.3, 100, 16);
+  const material3 = new MeshStandardMaterial({
     emissive: 0x33ff33,
   });
-  const torusKnot = new THREE.Mesh(geometry3, material3);
+  const torusKnot = new Mesh(geometry3, material3);
   torusKnot.position.set(0, 0, 0);
   scene.add(torusKnot);
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({
+  const renderer = new WebGLRenderer({
     canvas: canvasRef.value
   });
   // 设置渲染的尺寸大小
@@ -117,7 +118,7 @@ onMounted(() => {
   const renderPass = new RenderPass(scene, camera);
   composer.addPass(renderPass);
   // const effect = new UnrealBloomPass(
-  //   new THREE.Vector2(window.innerWidth, window.innerHeight),
+  //   new Vector2(window.innerWidth, window.innerHeight),
   //   0,
   //   10,
   //   1
@@ -129,7 +130,7 @@ onMounted(() => {
   // composer.renderToScreen = false;
 
   const outLinePass = new OutlinePass(
-    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    new Vector2(window.innerWidth, window.innerHeight),
     scene,
     camera
   );
@@ -153,12 +154,12 @@ onMounted(() => {
   controls.enableDamping = true;
 
   // 添加坐标轴辅助器
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
   // 设置时钟
-  const clock = new THREE.Clock();
-  const darkMaterial = new THREE.MeshBasicMaterial({ color: "black" });
-  const bloomLayer = new THREE.Layers();
+  const clock = new Clock();
+  const darkMaterial = new MeshBasicMaterial({ color: "black" });
+  const bloomLayer = new Layers();
   bloomLayer.set(0);
   const materials = {};
   function render() {

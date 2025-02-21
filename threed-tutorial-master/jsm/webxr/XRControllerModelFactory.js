@@ -52,7 +52,7 @@ class XRControllerModel extends Object3D {
 	}
 
 	/**
-	 * Polls data from the XRInputSource and updates the model's components to match
+	 * Polls data from the XRInputSource and updates the models's components to match
 	 * the real world data
 	 */
 	updateMatrixWorld( force ) {
@@ -64,7 +64,7 @@ class XRControllerModel extends Object3D {
 		// Cause the MotionController to poll the Gamepad for data
 		this.motionController.updateFromGamepad();
 
-		// Update the 3D model to reflect the button, thumbstick, and touchpad state
+		// Update the 3D models to reflect the button, thumbstick, and touchpad state
 		Object.values( this.motionController.components ).forEach( ( component ) => {
 
 			// Update node data based on the visual responses' current states
@@ -106,7 +106,7 @@ class XRControllerModel extends Object3D {
 }
 
 /**
- * Walks the model's tree to find the nodes needed to animate the components and
+ * Walks the models's tree to find the nodes needed to animate the components and
  * saves them to the motionContoller components for use in the frame loop. When
  * touchpads are found, attaches a touch dot to them.
  */

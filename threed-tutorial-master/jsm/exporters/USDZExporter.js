@@ -7,7 +7,7 @@ class USDZExporter {
 		const files = {};
 		const modelFileName = 'model.usda';
 
-		// model file should be first in USDZ archive so we init it here
+		// models file should be first in USDZ archive so we init it here
 		files[ modelFileName ] = null;
 
 		let output = buildHeader();

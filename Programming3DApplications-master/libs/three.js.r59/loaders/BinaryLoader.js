@@ -15,8 +15,8 @@ THREE.BinaryLoader.prototype = Object.create( THREE.Loader.prototype );
 //  - parameters
 //		- url (required)
 //		- callback (required)
-//		- texturePath (optional: if not specified, textures will be assumed to be in the same folder as JS model file)
-//		- binaryPath (optional: if not specified, binary file will be assumed to be in the same folder as JS model file)
+//		- texturePath (optional: if not specified, textures will be assumed to be in the same folder as JS models file)
+//		- binaryPath (optional: if not specified, binary file will be assumed to be in the same folder as JS models file)
 
 THREE.BinaryLoader.prototype.load = function ( url, callback, texturePath, binaryPath ) {
 

@@ -71,14 +71,14 @@ function main() {
   // Calculate the view matrix
   viewMatrix.setLookAt(0, 3, 10, 0, 0, 0, 0, 1, 0);
   mvMatrix.set(viewMatrix).rotate(60, 0, 1, 0); // Rotate 60 degree around the y-axis
-  // Calculate the model view projection matrix
+  // Calculate the models view projection matrix
   mvpMatrix.setPerspective(30, 1, 1, 100);
   mvpMatrix.multiply(mvMatrix);
-  // Calculate the matrix to transform the normal based on the model matrix
+  // Calculate the matrix to transform the normal based on the models matrix
   normalMatrix.setInverseOf(mvMatrix);
   normalMatrix.transpose();
 
-  // Pass the model view matrix to u_mvpMatrix
+  // Pass the models view matrix to u_mvpMatrix
   gl.uniformMatrix4fv(u_mvpMatrix, false, mvpMatrix.elements);
 
   // Pass the normal matrixu_normalMatrix

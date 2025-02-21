@@ -1,26 +1,30 @@
 <script setup lang="ts">
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import {
-  CSS2DRenderer,
-  CSS2DObject,
-} from "three/examples/jsm/renderers/CSS2DRenderer.js";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import gsap from "gsap";
-import * as dat from "dat.gui";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { onMounted, ref } from "vue";
+import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader";
+import {onMounted, ref} from "vue";
+import {
+  ACESFilmicToneMapping,
+  AxesHelper,
+  Clock,
+  EquirectangularReflectionMapping,
+  MeshStandardMaterial,
+  PerspectiveCamera,
+  Scene,
+  SRGBColorSpace,
+  TextureLoader,
+  WebGLRenderer
+} from "three";
 
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
-  // 1、创建场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 2、创建相机
-  const camera = new THREE.PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -36,19 +40,19 @@ onMounted(() => {
 
   // 灯光
   // 环境光
-  // const light = new THREE.AmbientLight(0xffffff, 1); // soft white light
+  // const light = new AmbientLight(0xffffff, 1); // soft white light
   // scene.add(light);
 
   // 添加hdr环境纹理
   const loader = new RGBELoader();
   loader.load("/textures/038.hdr", function (texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
+    texture.mapping = EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
   });
 
   // 加载纹理
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new TextureLoader();
   let params = {
     value: 0,
     value1: 0,
@@ -63,7 +67,7 @@ onMounted(() => {
   gltfLoader.setDRACOLoader(dracoLoader);
   let mixer;
   let stem, petal, stem1, petal1, stem2, petal2;
-  gltfLoader.load("/model/f4.glb", function (gltf1) {
+  gltfLoader.load("/models/f4.glb", function (gltf1) {
     console.log(gltf1);
     stem = gltf1.scene.children[0];
     petal = gltf1.scene.children[1];
@@ -71,7 +75,7 @@ onMounted(() => {
 
     gltf1.scene.traverse((item) => {
       if (item.material && item.material.name == "Water") {
-        item.material = new THREE.MeshStandardMaterial({
+        item.material = new MeshStandardMaterial({
           color: "skyblue",
           depthWrite: false,
           transparent: true,
@@ -87,7 +91,7 @@ onMounted(() => {
       }
     });
 
-    gltfLoader.load("/model/f2.glb", function (gltf2) {
+    gltfLoader.load("/models/f2.glb", function (gltf2) {
       gltf2.scene.traverse((item) => {
         if (item.material && item.material.name == "Stem") {
           stem1 = item;
@@ -105,7 +109,7 @@ onMounted(() => {
           console.log(petal.morphTargetInfluences);
         }
 
-        gltfLoader.load("/model/f1.glb", function (gltf2) {
+        gltfLoader.load("/models/f1.glb", function (gltf2) {
           gltf2.scene.traverse((item) => {
             if (item.material && item.material.name == "Stem") {
               stem2 = item;
@@ -149,7 +153,7 @@ onMounted(() => {
   });
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({
+  const renderer = new WebGLRenderer({
     logarithmicDepthBuffer: true,
     antialias: true,
   });
@@ -161,8 +165,9 @@ onMounted(() => {
   renderer.setClearColor(0xcccccc, 1);
   renderer.autoClear = false;
   // 设置电影渲染模式
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = ACESFilmicToneMapping;
+  // renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace
   renderer.sortObjects = true;
   renderer.logarithmicDepthBuffer = true;
 
@@ -178,10 +183,10 @@ onMounted(() => {
   controls.enableDamping = true;
 
   // 添加坐标轴辅助器
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
   // 设置时钟
-  const clock = new THREE.Clock();
+  const clock = new Clock();
   function render() {
     let time = clock.getDelta();
     if (mixer) {

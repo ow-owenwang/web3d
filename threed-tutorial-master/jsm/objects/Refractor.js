@@ -185,7 +185,7 @@ class Refractor extends Mesh {
 
 			// we use "Object Linear Texgen", so we need to multiply the texture matrix T
 			// (matrix above) with the projection and view matrix of the virtual camera
-			// and the model matrix of the refractor
+			// and the models matrix of the refractor
 
 			textureMatrix.multiply( camera.projectionMatrix );
 			textureMatrix.multiply( camera.matrixWorldInverse );

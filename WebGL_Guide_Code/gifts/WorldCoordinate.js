@@ -71,7 +71,7 @@ function main() {
     var x = Math.random() * Math.pow(-1, i);
     var z = Math.random() * i * 5;
     modelMatrix.setTranslate(x, 0, -z);
-    // Calculate a model view projection matrix
+    // Calculate a models view projection matrix
     mvpMatrix.set(projMatrix).multiply(viewMatrix).multiply(modelMatrix);
     // Set the matrix to u_mvpMatrix
     gl.uniformMatrix4fv(u_mvpMatrix, false, mvpMatrix.elements);

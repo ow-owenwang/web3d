@@ -82,8 +82,8 @@ onMounted(() => {
 // 渲染循环
   function render() {
     // 旋转动画
-    // model.rotation.y+=0.01;
-    // model.rotateY(0.01);
+    // models.rotation.y+=0.01;
+    // models.rotateY(0.01);
     renderer.render(scene, camera);
     requestAnimationFrame(render);
   }

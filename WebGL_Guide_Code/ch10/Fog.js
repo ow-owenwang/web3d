@@ -83,12 +83,12 @@ function main() {
   gl.clearColor(fogColor[0], fogColor[1], fogColor[2], 1.0); // Color of Fog
   gl.enable(gl.DEPTH_TEST);
 
-  // Pass the model matrix to u_ModelMatrix
+  // Pass the models matrix to u_ModelMatrix
   var modelMatrix = new Matrix4();
   modelMatrix.setScale(10, 10, 10);
   gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);
 
-  // Pass the model view projection matrix to u_MvpMatrix
+  // Pass the models view projection matrix to u_MvpMatrix
   var mvpMatrix = new Matrix4();
   mvpMatrix.setPerspective(30, canvas.width/canvas.height, 1, 1000);
   mvpMatrix.lookAt(eye[0], eye[1], eye[2], 0, 2, 0, 0, 1, 0);

@@ -42,7 +42,7 @@
 
     function initMatrices(canvas)
     {
-        // Create a model view matrix with object at 0, 0, -8
+        // Create a models view matrix with object at 0, 0, -8
         modelViewMatrix = mat4.create();
         mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -8]);
 
@@ -276,7 +276,7 @@
         gl.useProgram(shaderProgram);
 
  		// connect up the shader parameters: vertex position, texture coordinate,
- 		// projection/model matrices and texture
+ 		// projection/models matrices and texture
    	    // set up the buffers
         gl.bindBuffer(gl.ARRAY_BUFFER, obj.buffer);
         gl.vertexAttribPointer(shaderVertexPositionAttribute, obj.vertSize, gl.FLOAT, false, 0, 0);

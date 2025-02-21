@@ -37,16 +37,16 @@ function main() {
     return;
   }
 
-  // Create Matrix4 object for model transformation
+  // Create Matrix4 object for models transformation
   var modelMatrix = new Matrix4();
 
-  // Calculate a model matrix
+  // Calculate a models matrix
   var ANGLE = 60.0; // The rotation angle
   var Tx = 0.5;     // Translation distance
   modelMatrix.setRotate(ANGLE, 0, 0, 1);  // Set rotation matrix
   modelMatrix.translate(Tx, 0, 0);        // Multiply modelMatrix by the calculated translation matrix
 
-  // Pass the model matrix to the vertex shader
+  // Pass the models matrix to the vertex shader
   var u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
   if (!u_ModelMatrix) {
     console.log('Failed to get the storage location of u_xformMatrix');

@@ -25,7 +25,7 @@ function run() {
 		// Update the camera controller
 		orbitControls.update();
 
-		// Reposition the headlight to point at the model
+		// Reposition the headlight to point at the models
 		headlight.position.copy(camera.position);
 		
 		// Render the scene
@@ -157,7 +157,7 @@ function createScene(container) {
 	if (addEnvironment)
 		createEnvironment();
 
-	// The model
+	// The models
 	loadModel();
 }
 

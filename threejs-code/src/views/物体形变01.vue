@@ -1,22 +1,16 @@
 <script setup lang="ts">
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import {
-  CSS2DRenderer,
-  CSS2DObject,
-} from "three/examples/jsm/renderers/CSS2DRenderer.js";
+import {SRGBColorSpace} from "three";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import gsap from "gsap";
-import * as dat from "dat.gui";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { onMounted, ref } from "vue";
+import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader";
+import {onMounted, ref} from "vue";
 
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
-  // 1、创建场景
   const scene = new THREE.Scene();
 
   // 2、创建相机
@@ -63,7 +57,7 @@ onMounted(() => {
   gltfLoader.setDRACOLoader(dracoLoader);
   let mixer;
   let stem, petal, stem1, petal1, stem2, petal2, stem3, petal3;
-  gltfLoader.load("/model/f4.glb", function (gltf) {
+  gltfLoader.load("/models/f4.glb", function (gltf) {
     console.log(gltf);
     gltf.scene.rotation.x = Math.PI;
     gltf.scene.traverse((item) => {
@@ -101,7 +95,7 @@ onMounted(() => {
         console.log(item);
         petal = item;
 
-        gltfLoader.load("/model/f2.glb", (gltf) => {
+        gltfLoader.load("/models/f2.glb", (gltf) => {
           gltf.scene.traverse((item) => {
             if (item.material && item.material.name == "Petal") {
               petal1 = item;
@@ -140,7 +134,7 @@ onMounted(() => {
             }
           });
 
-          gltfLoader.load("./model/f1.glb", (gltf) => {
+          gltfLoader.load("./models/f1.glb", (gltf) => {
             gltf.scene.traverse((item) => {
               if (item.material && item.material.name == "Petal") {
                 petal2 = item;
@@ -199,7 +193,8 @@ onMounted(() => {
   renderer.autoClear = false;
   // 设置电影渲染模式
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  // renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace
   renderer.sortObjects = true;
   renderer.logarithmicDepthBuffer = true;
 

@@ -1,19 +1,31 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 // 导入轨道控制器
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// 导入动画库
-import gsap from "gsap";
-// 导入dat.gui
-import * as dat from "dat.gui";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {
+  AmbientLight,
+  AxesHelper,
+  BoxGeometry,
+  BufferAttribute,
+  Clock,
+  DirectionalLight,
+  DoubleSide,
+  Mesh,
+  MeshStandardMaterial,
+  PerspectiveCamera,
+  PlaneGeometry,
+  Scene,
+  TextureLoader,
+  WebGLRenderer
+} from "three";
+
 const canvasRef = ref();
 
 onMounted(() => {
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
 // 2、创建相机
-const camera = new THREE.PerspectiveCamera(
+const camera = new PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
   0.1,
@@ -25,19 +37,19 @@ camera.position.set(0, 0, 10);
 scene.add(camera);
 
 // 导入纹理
-const textureLoader = new THREE.TextureLoader();
-const doorColorTexture = textureLoader.load("./textures/door/color.jpg");
-const doorAplhaTexture = textureLoader.load("./textures/door/alpha.jpg");
+const textureLoader = new TextureLoader();
+const doorColorTexture = textureLoader.load("/textures/door/color.jpg");
+const doorAplhaTexture = textureLoader.load("/textures/door/alpha.jpg");
 const doorAoTexture = textureLoader.load(
-  "./textures/door/ambientOcclusion.jpg"
+  "/textures/door/ambientOcclusion.jpg"
 );
 //导入置换贴图
-const doorHeightTexture = textureLoader.load("./textures/door/height.jpg");
+const doorHeightTexture = textureLoader.load("/textures/door/height.jpg");
 
 // 添加物体
-const cubeGeometry = new THREE.BoxBufferGeometry(1, 1, 1, 100, 100, 100);
+const cubeGeometry = new BoxGeometry(1, 1, 1, 100, 100, 100);
 // 材质
-const material = new THREE.MeshStandardMaterial({
+const material = new MeshStandardMaterial({
   color: "#ffff00",
   map: doorColorTexture,
   alphaMap: doorAplhaTexture,
@@ -47,20 +59,20 @@ const material = new THREE.MeshStandardMaterial({
   displacementMap: doorHeightTexture,
   displacementScale: 0.1,
   //   opacity: 0.3,
-  //   side: THREE.DoubleSide,
+  //   side: DoubleSide,
 });
-material.side = THREE.DoubleSide;
-const cube = new THREE.Mesh(cubeGeometry, material);
+material.side = DoubleSide;
+const cube = new Mesh(cubeGeometry, material);
 scene.add(cube);
 // 给cube添加第二组uv
 cubeGeometry.setAttribute(
   "uv2",
-  new THREE.BufferAttribute(cubeGeometry.attributes.uv.array, 2)
+  new BufferAttribute(cubeGeometry.attributes.uv.array, 2)
 );
 
 // 添加平面
-const planeGeometry = new THREE.PlaneBufferGeometry(1, 1, 200, 200);
-const plane = new THREE.Mesh(planeGeometry, material);
+const planeGeometry = new PlaneGeometry(1, 1, 200, 200);
+const plane = new Mesh(planeGeometry, material);
 plane.position.set(1.5, 0, 0);
 
 scene.add(plane);
@@ -68,25 +80,25 @@ scene.add(plane);
 // 给平面设置第二组uv
 planeGeometry.setAttribute(
   "uv2",
-  new THREE.BufferAttribute(planeGeometry.attributes.uv.array, 2)
+  new BufferAttribute(planeGeometry.attributes.uv.array, 2)
 );
 
 // 灯光
 // 环境光
-const light = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
+const light = new AmbientLight(0xffffff, 0.5); // soft white light
 scene.add(light);
 //直线光源
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+const directionalLight = new DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(10, 10, 10);
 scene.add(directionalLight);
 
 // 初始化渲染器
-const renderer = new THREE.WebGLRenderer();
+const renderer = new WebGLRenderer({canvas: canvasRef.value});
 // 设置渲染的尺寸大小
 renderer.setSize(window.innerWidth, window.innerHeight);
 // console.log(renderer);
 // 将webgl渲染的canvas内容添加到body
-document.body.appendChild(renderer.domElement);
+// document.body.appendChild(renderer.domElement);
 
 // // 使用渲染器，通过相机将场景渲染进来
 // renderer.render(scene, camera);
@@ -97,10 +109,10 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
 // 添加坐标轴辅助器
-const axesHelper = new THREE.AxesHelper(5);
+const axesHelper = new AxesHelper(5);
 scene.add(axesHelper);
 // 设置时钟
-const clock = new THREE.Clock();
+const clock = new Clock();
 
 function render() {
   controls.update();

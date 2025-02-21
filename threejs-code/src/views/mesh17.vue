@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 // 导入轨道控制器
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// 导入动画库
-import gsap from "gsap";
-// 导入dat.gui
-import * as dat from "dat.gui";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { MeshBasicMaterial } from "three";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {
+  AmbientLight,
+  AxesHelper,
+  Clock,
+  Mesh,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
+  PerspectiveCamera,
+  PlaneGeometry,
+  PointLight,
+  Scene,
+  SphereGeometry,
+  WebGLRenderer
+} from "three";
+
 const canvasRef = ref();
 
 onMounted(() => {
@@ -16,31 +24,31 @@ onMounted(() => {
 
   // const gui = new dat.GUI();
   // 1、创建场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 2、创建相机
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
+  const camera = new PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
   );
 
   // 设置相机位置
   camera.position.set(0, 0, 10);
   scene.add(camera);
 
-  const sphereGeometry = new THREE.SphereBufferGeometry(1, 20, 20);
-  const material = new THREE.MeshStandardMaterial();
-  const sphere = new THREE.Mesh(sphereGeometry, material);
+  const sphereGeometry = new SphereGeometry(1, 20, 20);
+  const material = new MeshStandardMaterial();
+  const sphere = new Mesh(sphereGeometry, material);
   // 投射阴影
   sphere.castShadow = true;
 
   scene.add(sphere);
 
   // // 创建平面
-  const planeGeometry = new THREE.PlaneBufferGeometry(50, 50);
-  const plane = new THREE.Mesh(planeGeometry, material);
+  const planeGeometry = new PlaneGeometry(50, 50);
+  const plane = new Mesh(planeGeometry, material);
   plane.position.set(0, -1, 0);
   plane.rotation.x = -Math.PI / 2;
   // 接收阴影
@@ -49,16 +57,16 @@ onMounted(() => {
 
   // 灯光
   // 环境光
-  const light = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
+  const light = new AmbientLight(0xffffff, 0.5); // soft white light
   scene.add(light);
 
-  const smallBall = new THREE.Mesh(
-    new THREE.SphereBufferGeometry(0.1, 20, 20),
-    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  const smallBall = new Mesh(
+      new SphereGeometry(0.1, 20, 20),
+      new MeshBasicMaterial({color: 0xff0000})
   );
   smallBall.position.set(2, 2, 2);
   //直线光源
-  const pointLight = new THREE.PointLight(0xff0000, 1);
+  const pointLight = new PointLight(0xff0000, 1);
   // pointLight.position.set(2, 2, 2);
   pointLight.castShadow = true;
 
@@ -78,7 +86,7 @@ onMounted(() => {
   // gui.add(pointLight, "decay").min(0).max(5).step(0.01);
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new WebGLRenderer({canvas: canvasRef.value});
   // 设置渲染的尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
   // 开启场景中的阴影贴图
@@ -87,7 +95,7 @@ onMounted(() => {
 
   // console.log(renderer);
   // 将webgl渲染的canvas内容添加到body
-  document.body.appendChild(renderer.domElement);
+  // document.body.appendChild(renderer.domElement);
 
   // // 使用渲染器，通过相机将场景渲染进来
   // renderer.render(scene, camera);
@@ -98,10 +106,10 @@ onMounted(() => {
   controls.enableDamping = true;
 
   // 添加坐标轴辅助器
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
   // 设置时钟
-  const clock = new THREE.Clock();
+  const clock = new Clock();
 
   function render() {
     let time = clock.getElapsedTime();

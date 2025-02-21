@@ -3,7 +3,7 @@ import cameraModule from "./camera";
 import renderer from "./renderer";
 import controlsModule from "./controls";
 import scene from "./scene";
-import { updateMesh } from "@/three/createMesh";
+import {updateMesh} from "@/three/createMesh";
 
 const clock = new THREE.Clock();
 function animate(t) {

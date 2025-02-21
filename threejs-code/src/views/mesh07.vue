@@ -1,19 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 // 导入轨道控制器
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// 导入动画库
-import gsap from "gsap";
-// 导入dat.gui
-import * as dat from "dat.gui";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {
+  AxesHelper,
+  BoxGeometry,
+  Clock,
+  DoubleSide,
+  Mesh,
+  MeshBasicMaterial,
+  PerspectiveCamera,
+  PlaneGeometry,
+  Scene,
+  TextureLoader,
+  WebGLRenderer
+} from "three";
+
 const canvasRef = ref();
 
 onMounted(() => {
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
 // 2、创建相机
-const camera = new THREE.PerspectiveCamera(
+const camera = new PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
   0.1,
@@ -25,40 +34,40 @@ camera.position.set(0, 0, 10);
 scene.add(camera);
 
 // 导入纹理
-const textureLoader = new THREE.TextureLoader();
-const doorColorTexture = textureLoader.load("./textures/door/color.jpg");
-const doorAplhaTexture = textureLoader.load("./textures/door/alpha.jpg");
+const textureLoader = new TextureLoader();
+const doorColorTexture = textureLoader.load("/textures/door/color.jpg");
+const doorAplhaTexture = textureLoader.load("/textures/door/alpha.jpg");
 
 // 添加物体
-const cubeGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
+const cubeGeometry = new BoxGeometry(1, 1, 1);
 // 材质
-const basicMaterial = new THREE.MeshBasicMaterial({
+const basicMaterial = new MeshBasicMaterial({
   color: "#ffff00",
   map: doorColorTexture,
   //   alphaMap: doorAplhaTexture,
   transparent: true,
   opacity: 0.3,
-  //   side: THREE.DoubleSide,
+  //   side: DoubleSide,
 });
-basicMaterial.side = THREE.DoubleSide;
-const cube = new THREE.Mesh(cubeGeometry, basicMaterial);
+basicMaterial.side = DoubleSide;
+const cube = new Mesh(cubeGeometry, basicMaterial);
 scene.add(cube);
 
 // 添加平面
-const plane = new THREE.Mesh(
-  new THREE.PlaneBufferGeometry(1, 1),
+const plane = new Mesh(
+  new PlaneGeometry(1, 1),
   basicMaterial
 );
 plane.position.set(3, 0, 0);
 scene.add(plane);
 
 // 初始化渲染器
-const renderer = new THREE.WebGLRenderer();
+const renderer = new WebGLRenderer({canvas: canvasRef.value});
 // 设置渲染的尺寸大小
 renderer.setSize(window.innerWidth, window.innerHeight);
 // console.log(renderer);
 // 将webgl渲染的canvas内容添加到body
-document.body.appendChild(renderer.domElement);
+// document.body.appendChild(renderer.domElement);
 
 // // 使用渲染器，通过相机将场景渲染进来
 // renderer.render(scene, camera);
@@ -69,10 +78,10 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
 // 添加坐标轴辅助器
-const axesHelper = new THREE.AxesHelper(5);
+const axesHelper = new AxesHelper(5);
 scene.add(axesHelper);
 // 设置时钟
-const clock = new THREE.Clock();
+const clock = new Clock();
 
 function render() {
   controls.update();

@@ -195,7 +195,7 @@ var g_normalMatrix = new Matrix4(); // Coordinate transformation matrix for norm
 
 // Draw the cube
 function drawBox(gl, n, viewProjMatrix, u_MvpMatrix, u_NormalMatrix) {
-  // Calculate the model view project matrix and pass it to u_MvpMatrix
+  // Calculate the models view project matrix and pass it to u_MvpMatrix
   g_mvpMatrix.set(viewProjMatrix);
   g_mvpMatrix.multiply(g_modelMatrix);
   gl.uniformMatrix4fv(u_MvpMatrix, false, g_mvpMatrix.elements);

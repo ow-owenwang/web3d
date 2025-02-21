@@ -26,7 +26,7 @@ FuturgoCity.prototype.go = function() {
 	this.viewer.mouseDelegate = this;
 	this.viewer.keyboardDelegate = this;
 	
-	// Load the city model
+	// Load the city models
 	this.loadURL(FuturgoCity.URL);
 
 	// Make sure we have keyboard focus
@@ -251,13 +251,13 @@ FuturgoCity.prototype.onFuturgoLoadComplete = function(data) {
 
 	// The combined lighting from the two scenes
 	// makes the car look too washed-out;
-	// Turn off any lights that came with the car model
+	// Turn off any lights that came with the car models
 	futurgoScene.map(Vizi.PointLight, function(light) {
 		light.intensity = 0;
 	});
 
 	// Also turn off the ambient light that came with
-	// the city model
+	// the city models
 	this.scene.map(/ambient/, function(o) {
 		o.light.color.set(0, 0, 0);
 	});
@@ -272,7 +272,7 @@ FuturgoCity.prototype.onFuturgoLoadComplete = function(data) {
 	camera.near = 0.01;
 	driveCam.addComponent(camera);
 	futurgo.addChild(driveCam);	
-	// Account for scale in model so that
+	// Account for scale in models so that
 	//   we can position the camera properly
 	var scaley = futurgo.transform.scale.y;
 	var scalez = futurgo.transform.scale.z;

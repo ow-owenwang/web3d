@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader.js";
 // 初始化场景
 const scene = new THREE.Scene();
 

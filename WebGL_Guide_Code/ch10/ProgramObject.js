@@ -273,7 +273,7 @@ var g_mvpMatrix = new Matrix4();
 var g_normalMatrix = new Matrix4();
 
 function drawCube(gl, program, o, x, angle, viewProjMatrix) {
-  // Calculate a model matrix
+  // Calculate a models matrix
   g_modelMatrix.setTranslate(x, 0.0, 0.0);
   g_modelMatrix.rotate(20.0, 1.0, 0.0, 0.0);
   g_modelMatrix.rotate(angle, 0.0, 1.0, 0.0);
@@ -283,7 +283,7 @@ function drawCube(gl, program, o, x, angle, viewProjMatrix) {
   g_normalMatrix.transpose();
   gl.uniformMatrix4fv(program.u_NormalMatrix, false, g_normalMatrix.elements);
 
-  // Calculate model view projection matrix and pass it to u_MvpMatrix
+  // Calculate models view projection matrix and pass it to u_MvpMatrix
   g_mvpMatrix.set(viewProjMatrix);
   g_mvpMatrix.multiply(g_modelMatrix);
   gl.uniformMatrix4fv(program.u_MvpMatrix, false, g_mvpMatrix.elements);

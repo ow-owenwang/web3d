@@ -245,10 +245,10 @@ var g_normalMatrix = new Matrix4();  // Coordinate transformation matrix for nor
 
 // Draw rectangular solid
 function drawBox(gl, n, width, height, depth, viewProjMatrix, u_MvpMatrix, u_NormalMatrix) {
-  pushMatrix(g_modelMatrix);   // Save the model matrix
+  pushMatrix(g_modelMatrix);   // Save the models matrix
     // Scale a cube and draw
     g_modelMatrix.scale(width, height, depth);
-    // Calculate the model view project matrix and pass it to u_MvpMatrix
+    // Calculate the models view project matrix and pass it to u_MvpMatrix
     g_mvpMatrix.set(viewProjMatrix);
     g_mvpMatrix.multiply(g_modelMatrix);
     gl.uniformMatrix4fv(u_MvpMatrix, false, g_mvpMatrix.elements);
@@ -258,5 +258,5 @@ function drawBox(gl, n, width, height, depth, viewProjMatrix, u_MvpMatrix, u_Nor
     gl.uniformMatrix4fv(u_NormalMatrix, false, g_normalMatrix.elements);
     // Draw
     gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_BYTE, 0);
-  g_modelMatrix = popMatrix();   // Retrieve the model matrix
+  g_modelMatrix = popMatrix();   // Retrieve the models matrix
 }

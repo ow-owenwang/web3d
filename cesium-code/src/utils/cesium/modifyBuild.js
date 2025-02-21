@@ -16,13 +16,13 @@ import * as Cesium from "cesium";
     const featuresLength = cesium3DTileCon.featuresLength;
     console.log(cesium3DTileCon, featuresLength);
     for (let i = 0; i < featuresLength; i++) {
-      const model = cesium3DTileCon.getFeature(i).content._model;
+      const models = cesium3DTileCon.getFeature(i).content._model;
       console.log(cesium3DTileCon.getFeature(i), cesium3DTileCon.getFeature(i).content, cesium3DTileCon.getFeature(i).content._model)
 
       // TODO: 这里有问题！model上没有这个属性_rendererResources
       // 修改模型的片元着色器
       // const fragmentShaderSource =
-      //   (model._rendererResources.sourceShaders[1] = `
+      //   (models._rendererResources.sourceShaders[1] = `
       //         varying vec3 v_positionEC;
 
       //         void main()
@@ -55,7 +55,7 @@ import * as Cesium from "cesium";
       //     `);
 
       // // 片元着色器已经修改，需要更新
-      // model._shouldRegenerateShaders = true;
+      // models._shouldRegenerateShaders = true;
     }
   });
 } */

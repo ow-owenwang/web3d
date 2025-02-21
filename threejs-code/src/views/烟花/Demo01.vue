@@ -1,20 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
 
-import * as THREE from "three";
-
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import gsap from "gsap";
 import * as dat from "dat.gui";
 import vertexShader from "./shaders/flylight/vertex.glsl";
 import fragmentShader from "./shaders/flylight/fragment.glsl";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 import Fireworks from "./firework";
 
 // 导入水模块
-import { Water } from "three/examples/jsm/objects/Water2";
+import {Water} from "three/examples/jsm/objects/Water2";
+import {
+  ACESFilmicToneMapping,
+  Clock,
+  DoubleSide,
+  EquirectangularReflectionMapping,
+  PerspectiveCamera, PlaneGeometry,
+  Scene,
+  ShaderMaterial, SRGBColorSpace,
+  WebGLRenderer
+} from "three";
 
 const canvasRef = ref();
 
@@ -23,10 +31,10 @@ onMounted(() => {
 
   // console.log(THREE);
   // 初始化场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 创建透视相机
-  const camera = new THREE.PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     90,
     window.innerHeight / window.innerHeight,
     0.1,
@@ -42,7 +50,7 @@ onMounted(() => {
   scene.add(camera);
 
   // 加入辅助轴，帮助我们查看3维坐标轴
-  // const axesHelper = new THREE.AxesHelper(5);
+  // const axesHelper = new AxesHelper(5);
   // scene.add(axesHelper);
 
   // 加载纹理
@@ -50,43 +58,44 @@ onMounted(() => {
   // 创建纹理加载器对象
   const rgbeLoader = new RGBELoader();
   rgbeLoader.loadAsync("/2k.hdr").then((texture) => {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
+    texture.mapping = EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
   });
 
   // 创建着色器材质;
-  const shaderMaterial = new THREE.ShaderMaterial({
+  const shaderMaterial = new ShaderMaterial({
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     uniforms: {},
-    side: THREE.DoubleSide,
+    side: DoubleSide,
     //   transparent: true,
   });
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({
+  const renderer = new WebGLRenderer({
     canvas: canvasRef.value,
     alpha: true,
   });
   // renderer.shadowMap.enabled = true;
-  // renderer.shadowMap.type = THREE.BasicShadowMap;
-  // renderer.shadowMap.type = THREE.VSMShadowMap;
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  // renderer.toneMapping = THREE.LinearToneMapping;
-  // renderer.toneMapping = THREE.ReinhardToneMapping;
-  // renderer.toneMapping = THREE.CineonToneMapping;
+  // renderer.shadowMap.type = BasicShadowMap;
+  // renderer.shadowMap.type = VSMShadowMap;
+  // renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace
+  renderer.toneMapping = ACESFilmicToneMapping;
+  // renderer.toneMapping = LinearToneMapping;
+  // renderer.toneMapping = ReinhardToneMapping;
+  // renderer.toneMapping = CineonToneMapping;
   renderer.toneMappingExposure = 0.1;
 
   const gltfLoader = new GLTFLoader();
   let LightBox = null;
-  gltfLoader.load("/model/newyears_min.glb", (gltf) => {
+  gltfLoader.load("/models/newyears_min.glb", (gltf) => {
     console.log(gltf);
     scene.add(gltf.scene);
 
     //   创建水面
-    const waterGeometry = new THREE.PlaneGeometry(100, 100);
+    const waterGeometry = new PlaneGeometry(100, 100);
     let water = new Water(waterGeometry, {
       scale: 4,
       textureHeight: 1024,
@@ -97,7 +106,7 @@ onMounted(() => {
     scene.add(water);
   });
 
-  gltfLoader.load("/model/flyLight.glb", (gltf) => {
+  gltfLoader.load("/models/flyLight.glb", (gltf) => {
     console.log(gltf);
 
     LightBox = gltf.scene.children[0];
@@ -155,7 +164,7 @@ onMounted(() => {
   // controls.maxPolarAngle = (Math.PI / 3) * 2;
   // controls.minPolarAngle = (Math.PI / 3) * 2;
 
-  const clock = new THREE.Clock();
+  const clock = new Clock();
   // 管理烟花
   let fireworks = [];
   function animate() {

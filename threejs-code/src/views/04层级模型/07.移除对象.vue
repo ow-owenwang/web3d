@@ -55,7 +55,7 @@ onMounted(() => {
   scene.add(ambient);
 
 // scene.remove(ambient);//移除场景中环境光
-// scene.remove(model);//移除场景中模型对象
+// scene.remove(models);//移除场景中模型对象
 
 
 //渲染器和相机

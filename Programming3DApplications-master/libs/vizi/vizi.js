@@ -10375,7 +10375,7 @@ THREE.Loader.prototype = {
 		var mtype = "MeshLambertMaterial";
 		var mpars = { color: 0xeeeeee, opacity: 1.0, map: null, lightMap: null, normalMap: null, bumpMap: null, wireframe: false };
 
-		// parameters from model file
+		// parameters from models file
 
 		if ( m.shading ) {
 
@@ -11949,7 +11949,7 @@ THREE.SceneLoader.prototype = {
 							mat = objJSON.matrix;
 							quat = objJSON.quaternion;
 
-							// use materials from the model file
+							// use materials from the models file
 							// if there is no material specified in the object
 
 							if ( ! objJSON.material ) {
@@ -11958,9 +11958,9 @@ THREE.SceneLoader.prototype = {
 
 							}
 
-							// use materials from the model file
+							// use materials from the models file
 							// if there is just empty face material
-							// (must create new material as each model has its own face material)
+							// (must create new material as each models has its own face material)
 
 							if ( ( material instanceof THREE.MeshFaceMaterial ) && material.materials.length === 0 ) {
 
@@ -47940,7 +47940,7 @@ Vizi.Visual.prototype.realize = function()
 }
 
 /**
- * @fileoverview A visual containing a model in Collada format
+ * @fileoverview A visual containing a models in Collada format
  * @author Tony Parisi
  */
 goog.provide('Vizi.SceneVisual');

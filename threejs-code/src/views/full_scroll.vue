@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import {
-  CSS2DRenderer,
-  CSS2DObject,
-} from "three/examples/jsm/renderers/CSS2DRenderer.js";
 import gsap from "gsap";
 // 导入dat.gui
-import * as dat from "dat.gui";
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
 
 const canvasRef = ref();
 

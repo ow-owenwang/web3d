@@ -82,8 +82,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import {ref} from "vue";
 import eventHub from "@/utils/eventHub";
+
 const props = defineProps([
   "dataInfo",
   "dataInfoNum",

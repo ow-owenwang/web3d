@@ -1,24 +1,27 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 // 导入轨道控制器
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// 导入动画库
-import gsap from "gsap";
-// 导入dat.gui
-import * as dat from "dat.gui";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader";
+import {
+  AnimationMixer,
+  AxesHelper,
+  Clock,
+  EquirectangularReflectionMapping,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer
+} from "three";
+
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
-  // 1、创建场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 2、创建相机
-  const camera = new THREE.PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -34,12 +37,12 @@ onMounted(() => {
 
   // 灯光
   // 环境光
-  // const light = new THREE.AmbientLight(0xffffff, 1); // soft white light
+  // const light = new AmbientLight(0xffffff, 1); // soft white light
   // scene.add(light);
   // 添加hdr环境纹理
   const loader = new RGBELoader();
-  loader.load("./textures/038.hdr", function (texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
+  loader.load("/textures/038.hdr", function (texture) {
+    texture.mapping = EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
   });
@@ -48,22 +51,24 @@ onMounted(() => {
   let material = null;
   const gltfLoader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("./draco/gltf/");
+  dracoLoader.setDecoderPath("/draco/gltf/");
   dracoLoader.setDecoderConfig({ type: "js" });
   dracoLoader.preload();
   gltfLoader.setDRACOLoader(dracoLoader);
   let mixer;
-  gltfLoader.load("./model/min.glb", function (gltf) {
+  gltfLoader.load("/models/min.glb", function (gltf) {
     console.log(gltf);
     scene.add(gltf.scene);
     // 设置动画
-    mixer = new THREE.AnimationMixer(gltf.scene);
+    mixer = new AnimationMixer(gltf.scene);
     const action = mixer.clipAction(gltf.animations[0]);
     action.play();
   });
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new WebGLRenderer({
+    canvas: canvasRef.value
+  });
   // 设置渲染的尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
   // 开启场景中的阴影贴图
@@ -73,7 +78,7 @@ onMounted(() => {
 
   // console.log(renderer);
   // 将webgl渲染的canvas内容添加到body
-  document.body.appendChild(renderer.domElement);
+  // document.body.appendChild(renderer.domElement);
 
   // // 使用渲染器，通过相机将场景渲染进来
   // renderer.render(scene, camera);
@@ -84,10 +89,10 @@ onMounted(() => {
   controls.enableDamping = true;
 
   // 添加坐标轴辅助器
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
   // 设置时钟
-  const clock = new THREE.Clock();
+  const clock = new Clock();
 
   function render() {
     let time = clock.getDelta();

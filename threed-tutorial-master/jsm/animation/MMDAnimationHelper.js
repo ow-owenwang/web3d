@@ -610,7 +610,7 @@ class MMDAnimationHelper {
 	// possible but doesn't perfectly simulate.
 	// This method is more costly than the regular one so
 	// you are recommended to set constructor parameter "pmxAnimation: true"
-	// only if your PMX model animation doesn't work well.
+	// only if your PMX models animation doesn't work well.
 	// If you need better method you would be required to write your own.
 	_animatePMXMesh( mesh, sortedBonesData, ikSolver, grantSolver ) {
 
@@ -848,7 +848,7 @@ class MMDAnimationHelper {
 	 *    Calculating IK, Grant, and Physics after mixer animation can break
 	 *    the cache coherency.
 	 *
-	 * 2. Applying Grant two or more times without reset the posing breaks model.
+	 * 2. Applying Grant two or more times without reset the posing breaks models.
 	 */
 	_saveBones( mesh ) {
 

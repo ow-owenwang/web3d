@@ -1,6 +1,6 @@
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { FlyControls } from "three/examples/jsm/controls/FlyControls";
-import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {FlyControls} from "three/examples/jsm/controls/FlyControls";
+import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
 import cameraModule from "./camera";
 import renderer from "./renderer";
 import eventHub from "@/utils/eventHub";

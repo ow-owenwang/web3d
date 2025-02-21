@@ -9,8 +9,8 @@
 // @ is an alias to /src
 import Scene from "@/components/Scene.vue";
 import BigScreen from "@/components/BigScreen.vue";
-import { onMounted, reactive, watch, computed, ref } from "vue";
-import { getSmartCityInfo, getSmartCityList } from "@/api/api";
+import {computed, onMounted, reactive, ref, watch} from "vue";
+import {getSmartCityInfo, getSmartCityList} from "@/api/api";
 import gsap from "gsap";
 // console.log(testVertex)
 

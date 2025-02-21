@@ -126,7 +126,7 @@ function readOBJFile(fileName, gl, model, scale, reverse) {
 }
 
 var g_objDoc = null;      // The information of OBJ file
-var g_drawingInfo = null; // The information for drawing 3D model
+var g_drawingInfo = null; // The information for drawing 3D models
 
 // OBJ File has been read
 function onReadOBJFile(fileString, fileName, gl, o, scale, reverse) {
@@ -164,7 +164,7 @@ function draw(gl, program, angle, viewProjMatrix, model) {
   g_normalMatrix.transpose();
   gl.uniformMatrix4fv(program.u_NormalMatrix, false, g_normalMatrix.elements);
 
-  // Calculate the model view project matrix and pass it to u_MvpMatrix
+  // Calculate the models view project matrix and pass it to u_MvpMatrix
   g_mvpMatrix.set(viewProjMatrix);
   g_mvpMatrix.multiply(g_modelMatrix);
   gl.uniformMatrix4fv(program.u_MvpMatrix, false, g_mvpMatrix.elements);
@@ -447,7 +447,7 @@ OBJDoc.prototype.findColor = function(name){
 }
 
 //------------------------------------------------------------------------------
-// Retrieve the information for drawing 3D model
+// Retrieve the information for drawing 3D models
 OBJDoc.prototype.getDrawingInfo = function() {
   // Create an arrays for vertex coordinates, normals, colors, and indices
   var numIndices = 0;

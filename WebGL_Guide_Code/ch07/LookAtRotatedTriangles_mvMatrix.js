@@ -62,10 +62,10 @@ function main() {
   var modelMatrix = new Matrix4();
   modelMatrix.setRotate(-10, 0, 0, 1);
 
-  // Multiply model matrix to view matrix
+  // Multiply models matrix to view matrix
   var modelViewMatrix = viewMatrix.multiply(modelMatrix);
 
-  // Pass the model view projection matrix
+  // Pass the models view projection matrix
   gl.uniformMatrix4fv(u_ModelViewMatrix, false, modelViewMatrix.elements);
 
   // Clear <canvas>

@@ -84,7 +84,7 @@ function main() {
   var mvpMatrix = new Matrix4();  // Model view projection matrix
   mvpMatrix.setPerspective(30, canvas.width/canvas.height, 1, 100);
   mvpMatrix.lookAt(3, 3, 7, 0, 0, 0, 0, 1, 0);
-  // Pass the model view projection matrix to the variable u_MvpMatrix
+  // Pass the models view projection matrix to the variable u_MvpMatrix
   gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 
   // Clear color and depth buffer

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { CSS3DRenderer } from "three/examples/jsm/renderers/CSS3DRenderer.js";
+import {CSS3DRenderer} from "three/examples/jsm/renderers/CSS3DRenderer.js";
 // 初始化渲染器
 const renderer = new THREE.WebGLRenderer({
   // 设置抗锯齿

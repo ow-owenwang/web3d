@@ -55,7 +55,7 @@ onMounted(async () => {
     name: "Airplane",
     position: Cartesian3.fromDegrees(113.3191, 23.109, 1500),
     model: {
-      uri: "/model/Air.glb",
+      uri: "/models/Air.glb",
       // 设置飞机的最小像素
       minimumPixelSize: 128,
       // 设置飞机的轮廓

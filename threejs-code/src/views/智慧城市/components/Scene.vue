@@ -3,12 +3,11 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as THREE from "three";
 import gsap from "gsap";
 
 // 导入gui对象
-import gui from "@/three/gui";
 // 导入场景
 import scene from "@/three/scene";
 // 导入相机

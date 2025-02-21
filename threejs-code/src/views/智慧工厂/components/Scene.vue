@@ -3,12 +3,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import * as THREE from "three";
-import gsap from "gsap";
+import {onMounted, ref} from "vue";
 
 // 导入gui对象
-import gui from "@/three/gui";
 // 导入场景
 import scene from "@/three/scene";
 
@@ -22,12 +19,9 @@ import rendererModule from "@/three/renderer";
 // 初始化调整屏幕
 import "@/three/init";
 // 导入添加物体函数
-import createMesh from "@/three/createMesh";
-import { updateMesh } from "@/three/createMesh";
+import createMesh, {updateMesh} from "@/three/createMesh";
 // 导入每一帧的执行函数
 import animate from "@/three/animate";
-
-import eventHub from "@/utils/eventHub";
 
 console.log(controlModule);
 // 场景元素div

@@ -1,28 +1,40 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
-import gsap from "gsap";
-import * as dat from "dat.gui";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import * as d3 from "d3";
+import {
+  AmbientLight,
+  AxesHelper,
+  BufferGeometry,
+  Clock,
+  DirectionalLight,
+  ExtrudeGeometry,
+  FileLoader,
+  Line,
+  LineBasicMaterial,
+  Mesh,
+  MeshBasicMaterial,
+  Object3D,
+  PerspectiveCamera,
+  Raycaster,
+  Scene,
+  Shape,
+  Vector3,
+  WebGLRenderer
+} from "three";
+
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
+  const scene = new Scene();
 
-  // console.log(THREE);
-  // 初始化场景
-  const scene = new THREE.Scene();
-
-  // console.log(d3);
   // 创建透视相机
-  const camera = new THREE.PerspectiveCamera(
-    90,
-    window.innerHeight / window.innerHeight,
-    0.1,
-    100000
+  const camera = new PerspectiveCamera(
+      90,
+      window.innerHeight / window.innerHeight,
+      0.1,
+      100000
   );
   // 设置相机位置
   // object3d具有position，属性是1个3维的向量
@@ -34,21 +46,21 @@ onMounted(() => {
   scene.add(camera);
 
   // 加入辅助轴，帮助我们查看3维坐标轴
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
 
   // 加载纹理
-  const map = new THREE.Object3D();
+  const map = new Object3D();
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  const directionalLight = new DirectionalLight(0xffffff, 0.5);
   scene.add(directionalLight);
-  const light = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
+  const light = new AmbientLight(0xffffff, 0.5); // soft white light
   scene.add(light);
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
+  const renderer = new WebGLRenderer({canvas: canvasRef.value, alpha: true});
   // renderer.shadowMap.enabled = true;
-  // renderer.shadowMap.type = THREE.BasicShadowMap;
-  // renderer.shadowMap.type = THREE.VSMShadowMap;
+  // renderer.shadowMap.type = BasicShadowMap;
+  // renderer.shadowMap.type = VSMShadowMap;
 
   // 设置渲染尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -67,8 +79,7 @@ onMounted(() => {
     renderer.setPixelRatio(window.devicePixelRatio);
   });
 
-  // 将渲染器添加到body
-  document.body.appendChild(renderer.domElement);
+  // document.body.appendChild(renderer.domElement);
   const canvas = renderer.domElement;
 
   // 初始化控制器
@@ -78,8 +89,9 @@ onMounted(() => {
   // 设置自动旋转
   // controls.autoRotate = true;
 
-  const clock = new THREE.Clock();
-  function animate(t) {
+  const clock = new Clock();
+
+  function animate() {
     controls.update();
     const deltaTime = clock.getDelta();
 
@@ -90,11 +102,9 @@ onMounted(() => {
 
   animate();
 
-  // 创建纹理加载器对象
-  const textureLoader = new THREE.TextureLoader();
   const projection1 = d3.geoMercator().center([116, 39]).translate([0, 0, 0]);
-  const loader = new THREE.FileLoader();
-  loader.load("./assets/100000_full.json", (data) => {
+  const loader = new FileLoader();
+  loader.load("/100000_full.json", (data) => {
     // console.log(data);
     const jsonData = JSON.parse(data);
     operationData(jsonData);
@@ -107,7 +117,7 @@ onMounted(() => {
 
     features.forEach((feature) => {
       // 单个省份 对象
-      const province = new THREE.Object3D();
+      const province = new Object3D();
       // 地址
       province.properties = feature.properties.name;
       const coordinates = feature.geometry.coordinates;
@@ -149,25 +159,25 @@ onMounted(() => {
   }
 
   function lineDraw(polygon, color, projection) {
-    const lineGeometry = new THREE.BufferGeometry();
-    const pointsArray = new Array();
+    const lineGeometry = new BufferGeometry();
+    const pointsArray = Array();
     polygon.forEach((row) => {
       const [x, y] = projection(row);
       // 创建三维点
-      pointsArray.push(new THREE.Vector3(x, -y, 9));
+      pointsArray.push(new Vector3(x, -y, 9));
     });
     // 放入多个点
     lineGeometry.setFromPoints(pointsArray);
 
-    const lineMaterial = new THREE.LineBasicMaterial({
+    const lineMaterial = new LineBasicMaterial({
       color: color,
     });
-    return new THREE.Line(lineGeometry, lineMaterial);
+    return new Line(lineGeometry, lineMaterial);
   }
 
   // 根据经纬度坐标生成物体
   function drawExtrudeMesh(polygon, color, projection) {
-    const shape = new THREE.Shape();
+    const shape = new Shape();
     console.log(polygon, projection);
     polygon.forEach((row, i) => {
       const [x, y] = projection(row);
@@ -178,25 +188,26 @@ onMounted(() => {
     });
 
     // 拉伸
-    const geometry = new THREE.ExtrudeGeometry(shape, {
+    const geometry = new ExtrudeGeometry(shape, {
       depth: 10,
       bevelEnabled: false,
     });
-    const material = new THREE.MeshBasicMaterial({
+    const material = new MeshBasicMaterial({
       color: color,
       transparent: true,
       opacity: 0.5,
     });
-    return new THREE.Mesh(geometry, material);
+    return new Mesh(geometry, material);
   }
 
   // 监听鼠标
   window.addEventListener("click", onRay);
   // 全局对象
   let lastPick = null;
+
   function onRay(event) {
     let pickPosition = setPickPosition(event);
-    const raycaster = new THREE.Raycaster();
+    const raycaster = new Raycaster();
     raycaster.setFromCamera(pickPosition, camera);
     // 计算物体和射线的交点
     const intersects = raycaster.intersectObjects([map], true);
@@ -224,10 +235,10 @@ onMounted(() => {
   }
 
   /**
-   * 获取鼠标在three.js 中归一化坐标
+   * 获取鼠标在js 中归一化坐标
    * */
   function setPickPosition(event) {
-    let pickPosition = { x: 0, y: 0 };
+    let pickPosition = {x: 0, y: 0};
     // 计算后 以画布 开始为 （0，0）点
     const pos = getCanvasRelativePosition(event);
     // 数据归一化

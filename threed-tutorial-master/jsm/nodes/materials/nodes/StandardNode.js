@@ -341,7 +341,7 @@ class StandardNode extends Node {
 
 				output.push(
 					clearcoat.code,
-					'material.clearcoat = saturate( ' + clearcoat.result + ' );' // Burley clearcoat model
+					'material.clearcoat = saturate( ' + clearcoat.result + ' );' // Burley clearcoat models
 				);
 
 			} else if ( useClearcoat ) {

@@ -59,24 +59,24 @@ function main() {
   var projMatrix = new Matrix4();  // Projection matrix
   var mvpMatrix = new Matrix4();   // Model view projection matrix
 
-  // Calculate the model, view and projection matrices
+  // Calculate the models, view and projection matrices
   modelMatrix.setTranslate(0.75, 0, 0);
   viewMatrix.setLookAt(0, 0, 5, 0, 0, -100, 0, 1, 0);
   projMatrix.setPerspective(30, canvas.width/canvas.height, 1, 100);
-  // Calculate the model view projection matrix
+  // Calculate the models view projection matrix
   mvpMatrix.set(projMatrix).multiply(viewMatrix).multiply(modelMatrix);
-  // Pass the model view projection matrix to u_MvpMatrix
+  // Pass the models view projection matrix to u_MvpMatrix
   gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 
   gl.clear(gl.COLOR_BUFFER_BIT);   // Clear <canvas>
 
   gl.drawArrays(gl.TRIANGLES, 0, n);   // Draw the triangles
 
-　// Prepare the model matrix for another pair of triangles
+　// Prepare the models matrix for another pair of triangles
   modelMatrix.setTranslate(-0.75, 0, 0);
-  // Calculate the model view projection matrix
+  // Calculate the models view projection matrix
   mvpMatrix.set(projMatrix).multiply(viewMatrix).multiply(modelMatrix);
-  // Pass the model view projection matrix to u_MvpMatrix
+  // Pass the models view projection matrix to u_MvpMatrix
   gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 
   gl.drawArrays(gl.TRIANGLES, 0, n);   // Draw the triangles

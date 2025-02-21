@@ -64,7 +64,7 @@ function main() {
   var modelMatrix = new Matrix4();
   modelMatrix.setRotate(-10, 0, 0, 1); // Rotate around z-axis
 
-  // Pass the view projection matrix and model matrix
+  // Pass the view projection matrix and models matrix
   gl.uniformMatrix4fv(u_ViewMatrix, false, viewMatrix.elements);
   gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);
 

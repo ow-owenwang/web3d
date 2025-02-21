@@ -195,7 +195,7 @@ MQODoc.prototype.skipToEndOfChunk = function() {
 }
 
 //------------------------------------------------------------------------------
-// Retrieve the information for drawing 3D model
+// Retrieve the information for drawing 3D models
 MQODoc.prototype.getDrawingInfo = function() {
   // Create an arrays for vertex coordinates, normals, colors, and indices
   var vertices = new Float32Array(this.numVertices * 3);

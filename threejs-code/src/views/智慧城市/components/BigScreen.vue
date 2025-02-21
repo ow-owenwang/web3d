@@ -43,7 +43,8 @@
 
 <script setup>
 import eventHub from "@/utils/eventHub";
-import { ref } from "vue";
+import {ref} from "vue";
+
 const props = defineProps(["dataInfo", "eventList"]);
 const imgs = {
   电力: require("@/assets/bg/dianli.svg"),

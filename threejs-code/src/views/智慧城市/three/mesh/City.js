@@ -1,13 +1,8 @@
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import scene from "../scene";
 import modifyCityMaterial from "../modify/modifyCityMaterial";
-import FlyLine from "./FlyLine";
-import FlyLineShader from "./FlyLineShader";
 import MeshLine from "./MeshLine";
-import LightWall from "./LightWall";
-import LightRadar from "./LightRadar";
-import AlarmSprite from "./AlarmSprite";
 
 export default function createCity() {
   const gltfLoader = new GLTFLoader();

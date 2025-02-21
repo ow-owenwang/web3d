@@ -1,24 +1,27 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
-
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import gsap from "gsap";
+import {onMounted, ref} from "vue";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import * as dat from "dat.gui";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 // 导入后期效果合成器
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer";
 
 // three框架本身自带效果
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { DotScreenPass } from "three/examples/jsm/postprocessing/DotScreenPass";
-import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass";
-import { SSAARenderPass } from "three/examples/jsm/postprocessing/SSAARenderPass";
-import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
+import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass";
+import {DotScreenPass} from "three/examples/jsm/postprocessing/DotScreenPass";
+import {SMAAPass} from "three/examples/jsm/postprocessing/SMAAPass";
+import {GlitchPass} from "three/examples/jsm/postprocessing/GlitchPass";
+import {UnrealBloomPass} from "three/examples/jsm/postprocessing/UnrealBloomPass";
+import {
+  ACESFilmicToneMapping,
+  Clock,
+  CubeTextureLoader,
+  DirectionalLight,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer
+} from "three";
 
 const canvasRef = ref();
 
@@ -28,10 +31,10 @@ onMounted(() => {
 
   // console.log(THREE);
   // 初始化场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 创建透视相机
-  const camera = new THREE.PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     75,
     window.innerHeight / window.innerHeight,
     1,
@@ -47,16 +50,12 @@ onMounted(() => {
   scene.add(camera);
 
   // 加入辅助轴，帮助我们查看3维坐标轴
-  // const axesHelper = new THREE.AxesHelper(5);
+  // const axesHelper = new AxesHelper(5);
   // scene.add(axesHelper);
 
-  // 加载纹理
-
-  // 创建纹理加载器对象
-  const textureLoader = new THREE.TextureLoader();
 
   // 添加环境纹理
-  const cubeTextureLoader = new THREE.CubeTextureLoader();
+  const cubeTextureLoader = new CubeTextureLoader();
   const envMapTexture = cubeTextureLoader.load([
     "/textures/environmentMaps/0/px.jpg",
     "/textures/environmentMaps/0/nx.jpg",
@@ -68,7 +67,7 @@ onMounted(() => {
   scene.background = envMapTexture;
   scene.environment = envMapTexture;
 
-  const directionLight = new THREE.DirectionalLight("#ffffff", 1);
+  const directionLight = new DirectionalLight("#ffffff", 1);
   directionLight.castShadow = true;
   directionLight.position.set(0, 0, 200);
   scene.add(directionLight);
@@ -84,7 +83,7 @@ onMounted(() => {
   });
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({
+  const renderer = new WebGLRenderer({
     canvas: canvasRef.value
   });
   // 设置渲染尺寸大小
@@ -116,7 +115,7 @@ onMounted(() => {
   effectComposer.addPass(glitchPass);
 
   // unrealBloomPass.exposure = 1;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
   unrealBloomPass.strength = 1;
   unrealBloomPass.radius = 0;
@@ -154,7 +153,7 @@ onMounted(() => {
   // 设置自动旋转
   // controls.autoRotate = true;
 
-  const clock = new THREE.Clock();
+  const clock = new Clock();
   function animate() {
     controls.update();
     const time = clock.getElapsedTime();

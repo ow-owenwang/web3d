@@ -14,7 +14,7 @@ var VSHADER_SOURCE =
   'void main() {\n' +
   '  vec4 color = vec4(1.0, 1.0, 1.0, 1.0);\n' + // Sphere color
   '  gl_Position = u_MvpMatrix * a_Position;\n' +
-     // Calculate a normal to be fit with a model matrix, and make it 1.0 in length
+     // Calculate a normal to be fit with a models matrix, and make it 1.0 in length
   '  vec3 normal = normalize(vec3(u_NormalMatrix * a_Normal));\n' +
      // Calculate world coordinate of vertex
   '  vec4 vertexPosition = u_ModelMatrix * a_Position;\n' +
@@ -91,17 +91,17 @@ function main() {
   var mvpMatrix = new Matrix4(); 　 // Model view projection matrix
   var normalMatrix = new Matrix4(); // Transformation matrix for normals
 
-  // Pass the model matrix to u_ModelMatrix
+  // Pass the models matrix to u_ModelMatrix
   gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);
 
   // Calculate the view projection matrix
   mvpMatrix.setPerspective(30, canvas.width/canvas.height, 1, 100);
   mvpMatrix.lookAt(0, 0, 6, 0, 0, 0, 0, 1, 0);
   mvpMatrix.multiply(modelMatrix);
-  // Pass the model view projection matrix to u_MvpMatrix
+  // Pass the models view projection matrix to u_MvpMatrix
   gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 
-  // Calculate the matrix to transform the normal based on the model matrix
+  // Calculate the matrix to transform the normal based on the models matrix
   normalMatrix.setInverseOf(modelMatrix);
   normalMatrix.transpose();
   // Pass the transformation matrix for normals to u_NormalMatrix

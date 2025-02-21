@@ -184,7 +184,7 @@ class ThreeMFLoader extends Loader {
 
 				}
 
-				const modelNode = xmlData.querySelector( 'model' );
+				const modelNode = xmlData.querySelector( 'models' );
 				const extensions = {};
 
 				for ( let i = 0; i < modelNode.attributes.length; i ++ ) {
@@ -1366,7 +1366,7 @@ class ThreeMFLoader extends Loader {
 			const modelsKeys = Object.keys( modelsData );
 			const textureData = {};
 
-			// evaluate model relationships to textures
+			// evaluate models relationships to textures
 
 			if ( modelRels ) {
 

@@ -1,4 +1,5 @@
 import * as THREE from "three";
+
 export default class MeshLine {
   constructor(geometry) {
     const edges = new THREE.EdgesGeometry(geometry);

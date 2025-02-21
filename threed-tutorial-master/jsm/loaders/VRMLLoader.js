@@ -1159,7 +1159,7 @@ class VRMLLoader extends Loader {
 
 			if ( material.map ) {
 
-				// respect VRML lighting model
+				// respect VRML lighting models
 
 				if ( material.map.__type ) {
 

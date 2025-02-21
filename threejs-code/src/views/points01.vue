@@ -1,25 +1,32 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 // 导入轨道控制器
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// 导入动画库
-import gsap from "gsap";
-// 导入dat.gui
-import * as dat from "dat.gui";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {
+  AdditiveBlending,
+  AxesHelper,
+  BufferAttribute,
+  BufferGeometry,
+  Clock,
+  PerspectiveCamera,
+  Points,
+  PointsMaterial,
+  Scene,
+  TextureLoader,
+  WebGLRenderer
+} from "three";
+
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
-  // 1、创建场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 2、创建相机
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    30
+  const camera = new PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      30
   );
 
   // 设置相机位置
@@ -27,7 +34,7 @@ onMounted(() => {
   scene.add(camera);
 
   function createPoints(url, size = 0.5) {
-    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesGeometry = new BufferGeometry();
     const count = 10000;
 
     // 设置缓冲区数组
@@ -40,34 +47,34 @@ onMounted(() => {
       colors[i] = Math.random();
     }
     particlesGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(positions, 3)
+        "position",
+        new BufferAttribute(positions, 3)
     );
     particlesGeometry.setAttribute(
-      "color",
-      new THREE.BufferAttribute(colors, 3)
+        "color",
+        new BufferAttribute(colors, 3)
     );
 
     // 设置点材质
-    const pointsMaterial = new THREE.PointsMaterial();
+    const pointsMaterial = new PointsMaterial();
     pointsMaterial.size = 0.5;
     pointsMaterial.color.set(0xfff000);
     // 相机深度而衰减
     pointsMaterial.sizeAttenuation = true;
 
     // 载入纹理
-    const textureLoader = new THREE.TextureLoader();
+    const textureLoader = new TextureLoader();
     const texture = textureLoader.load(`/textures/particles/${url}.png`);
     // 设置点材质纹理
     pointsMaterial.map = texture;
     pointsMaterial.alphaMap = texture;
     pointsMaterial.transparent = true;
     pointsMaterial.depthWrite = false;
-    pointsMaterial.blending = THREE.AdditiveBlending;
+    pointsMaterial.blending = AdditiveBlending;
     // 设置启动顶点颜色
     pointsMaterial.vertexColors = true;
 
-    const points = new THREE.Points(particlesGeometry, pointsMaterial);
+    const points = new Points(particlesGeometry, pointsMaterial);
 
     scene.add(points);
     return points;
@@ -78,7 +85,9 @@ onMounted(() => {
   const points3 = createPoints("xh", 2);
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new WebGLRenderer({
+    canvas: canvasRef.value
+  });
   // 设置渲染的尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
   // 开启场景中的阴影贴图
@@ -87,7 +96,7 @@ onMounted(() => {
 
   // console.log(renderer);
   // 将webgl渲染的canvas内容添加到body
-  document.body.appendChild(renderer.domElement);
+  // document.body.appendChild(renderer.domElement);
 
   // // 使用渲染器，通过相机将场景渲染进来
   // renderer.render(scene, camera);
@@ -98,10 +107,10 @@ onMounted(() => {
   controls.enableDamping = true;
 
   // 添加坐标轴辅助器
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
   // 设置时钟
-  const clock = new THREE.Clock();
+  const clock = new Clock();
 
   function render() {
     let time = clock.getElapsedTime();

@@ -1,56 +1,66 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import gsap from "gsap";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import * as dat from "dat.gui";
+import {
+  AxesHelper,
+  Clock,
+  Color,
+  DoubleSide,
+  Mesh,
+  PerspectiveCamera,
+  PlaneGeometry,
+  Scene,
+  ShaderMaterial,
+  WebGLRenderer
+} from "three";
 
 const canvasRef = ref();
 
 onMounted(() => {
-    const gui = new dat.GUI();
+  const gui = new dat.GUI();
 
 // console.log(THREE);
 // 初始化场景
-const scene = new THREE.Scene();
+  const scene = new Scene();
 
 // 创建透视相机
-const camera = new THREE.PerspectiveCamera(
-  90,
-  window.innerHeight / window.innerHeight,
-  0.1,
-  1000
-);
+  const camera = new PerspectiveCamera(
+      90,
+      window.innerHeight / window.innerHeight,
+      0.1,
+      1000
+  );
 // 设置相机位置
 // object3d具有position，属性是1个3维的向量
-camera.position.set(0, 0, 2);
+  camera.position.set(0, 0, 2);
 // 更新摄像头
-camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = window.innerWidth / window.innerHeight;
 //   更新摄像机的投影矩阵
-camera.updateProjectionMatrix();
-scene.add(camera);
+  camera.updateProjectionMatrix();
+  scene.add(camera);
 
 // 加入辅助轴，帮助我们查看3维坐标轴
-const axesHelper = new THREE.AxesHelper(5);
-scene.add(axesHelper);
+  const axesHelper = new AxesHelper(5);
+  scene.add(axesHelper);
 
-const params = {
-  uWaresFrequency: 14,
-  uScale: 0.03,
-  uXzScale: 1.5,
-  uNoiseFrequency: 10,
-  uNoiseScale: 1.5,
-  uLowColor: "#ff0000",
-  uHighColor: "#ffff00",
-  uXspeed: 1,
-  uZspeed: 1,
-  uNoiseSpeed: 1,
-  uOpacity: 1,
-};
+  const params = {
+    uWaresFrequency: 14,
+    uScale: 0.03,
+    uXzScale: 1.5,
+    uNoiseFrequency: 10,
+    uNoiseScale: 1.5,
+    uLowColor: "#ff0000",
+    uHighColor: "#ffff00",
+    uXspeed: 1,
+    uZspeed: 1,
+    uNoiseSpeed: 1,
+    uOpacity: 1,
+  };
 
-const shaderMaterial = new THREE.ShaderMaterial({
-  vertexShader: `
+  const shaderMaterial = new ShaderMaterial({
+    vertexShader: `
   precision lowp float;
 uniform float uWaresFrequency;
 uniform float uScale;
@@ -163,7 +173,7 @@ void main(){
     gl_Position = projectionMatrix * viewMatrix *modelPosition;
 }
   `,
-  fragmentShader: `
+    fragmentShader: `
   precision lowp float;
 
 uniform vec3 uHighColor;
@@ -177,182 +187,183 @@ void main(){
     gl_FragColor = vec4(color,uOpacity);
 }
   `,
-  side: THREE.DoubleSide,
-  uniforms: {
-    uWaresFrequency: {
-      value: params.uWaresFrequency,
+    side: DoubleSide,
+    uniforms: {
+      uWaresFrequency: {
+        value: params.uWaresFrequency,
+      },
+      uScale: {
+        value: params.uScale,
+      },
+      uNoiseFrequency: {
+        value: params.uNoiseFrequency,
+      },
+      uNoiseScale: {
+        value: params.uNoiseScale,
+      },
+      uXzScale: {
+        value: params.uXzScale,
+      },
+      uTime: {
+        value: params.uTime,
+      },
+      uLowColor: {
+        value: new Color(params.uLowColor),
+      },
+      uHighColor: {
+        value: new Color(params.uHighColor),
+      },
+      uXspeed: {
+        value: params.uXspeed,
+      },
+      uZspeed: {
+        value: params.uZspeed,
+      },
+      uNoiseSpeed: {
+        value: params.uNoiseSpeed,
+      },
+      uOpacity: {
+        value: params.uOpacity,
+      },
     },
-    uScale: {
-      value: params.uScale,
-    },
-    uNoiseFrequency: {
-      value: params.uNoiseFrequency,
-    },
-    uNoiseScale: {
-      value: params.uNoiseScale,
-    },
-    uXzScale: {
-      value: params.uXzScale,
-    },
-    uTime: {
-      value: params.uTime,
-    },
-    uLowColor: {
-      value: new THREE.Color(params.uLowColor),
-    },
-    uHighColor: {
-      value: new THREE.Color(params.uHighColor),
-    },
-    uXspeed: {
-      value: params.uXspeed,
-    },
-    uZspeed: {
-      value: params.uZspeed,
-    },
-    uNoiseSpeed: {
-      value: params.uNoiseSpeed,
-    },
-    uOpacity: {
-      value: params.uOpacity,
-    },
-  },
-  transparent: true,
-});
-
-gui
-  .add(params, "uWaresFrequency")
-  .min(1)
-  .max(100)
-  .step(0.1)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uWaresFrequency.value = value;
+    transparent: true,
   });
 
-gui
-  .add(params, "uScale")
-  .min(0)
-  .max(0.2)
-  .step(0.001)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uScale.value = value;
+  gui
+      .add(params, "uWaresFrequency")
+      .min(1)
+      .max(100)
+      .step(0.1)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uWaresFrequency.value = value;
+      });
+
+  gui
+      .add(params, "uScale")
+      .min(0)
+      .max(0.2)
+      .step(0.001)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uScale.value = value;
+      });
+
+  gui
+      .add(params, "uNoiseFrequency")
+      .min(1)
+      .max(100)
+      .step(0.1)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uNoiseFrequency.value = value;
+      });
+
+  gui
+      .add(params, "uNoiseScale")
+      .min(0)
+      .max(5)
+      .step(0.001)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uNoiseScale.value = value;
+      });
+
+  gui
+      .add(params, "uXzScale")
+      .min(0)
+      .max(5)
+      .step(0.1)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uXzScale.value = value;
+      });
+
+  gui.addColor(params, "uLowColor").onFinishChange((value) => {
+    shaderMaterial.uniforms.uLowColor.value = new Color(value);
+  });
+  gui.addColor(params, "uHighColor").onFinishChange((value) => {
+    shaderMaterial.uniforms.uHighColor.value = new Color(value);
   });
 
-gui
-  .add(params, "uNoiseFrequency")
-  .min(1)
-  .max(100)
-  .step(0.1)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uNoiseFrequency.value = value;
-  });
+  gui
+      .add(params, "uXspeed")
+      .min(0)
+      .max(5)
+      .step(0.001)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uXspeed.value = value;
+      });
 
-gui
-  .add(params, "uNoiseScale")
-  .min(0)
-  .max(5)
-  .step(0.001)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uNoiseScale.value = value;
-  });
+  gui
+      .add(params, "uZspeed")
+      .min(0)
+      .max(5)
+      .step(0.001)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uZspeed.value = value;
+      });
 
-gui
-  .add(params, "uXzScale")
-  .min(0)
-  .max(5)
-  .step(0.1)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uXzScale.value = value;
-  });
+  gui
+      .add(params, "uNoiseSpeed")
+      .min(0)
+      .max(5)
+      .step(0.001)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uNoiseSpeed.value = value;
+      });
 
-gui.addColor(params, "uLowColor").onFinishChange((value) => {
-  shaderMaterial.uniforms.uLowColor.value = new THREE.Color(value);
-});
-gui.addColor(params, "uHighColor").onFinishChange((value) => {
-  shaderMaterial.uniforms.uHighColor.value = new THREE.Color(value);
-});
+  gui
+      .add(params, "uOpacity")
+      .min(0)
+      .max(1)
+      .step(0.01)
+      .onChange((value) => {
+        shaderMaterial.uniforms.uOpacity.value = value;
+      });
 
-gui
-  .add(params, "uXspeed")
-  .min(0)
-  .max(5)
-  .step(0.001)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uXspeed.value = value;
-  });
+  const plane = new Mesh(
+      new PlaneGeometry(1, 1, 1024, 1024),
+      shaderMaterial
+  );
+  plane.rotation.x = -Math.PI / 2;
 
-gui
-  .add(params, "uZspeed")
-  .min(0)
-  .max(5)
-  .step(0.001)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uZspeed.value = value;
-  });
-
-gui
-  .add(params, "uNoiseSpeed")
-  .min(0)
-  .max(5)
-  .step(0.001)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uNoiseSpeed.value = value;
-  });
-
-gui
-  .add(params, "uOpacity")
-  .min(0)
-  .max(1)
-  .step(0.01)
-  .onChange((value) => {
-    shaderMaterial.uniforms.uOpacity.value = value;
-  });
-
-const plane = new THREE.Mesh(
-  new THREE.PlaneGeometry(1, 1, 1024, 1024),
-  shaderMaterial
-);
-plane.rotation.x = -Math.PI / 2;
-
-scene.add(plane);
+  scene.add(plane);
 
 // 初始化渲染器
-const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.value, alpha: true });
+  const renderer = new WebGLRenderer({canvas: canvasRef.value});
 
 // 设置渲染尺寸大小
-renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
 // 监听屏幕大小改变的变化，设置渲染的尺寸
-window.addEventListener("resize", () => {
-  //   console.log("resize");
-  // 更新摄像头
-  camera.aspect = window.innerWidth / window.innerHeight;
-  //   更新摄像机的投影矩阵
-  camera.updateProjectionMatrix();
+  window.addEventListener("resize", () => {
+    //   console.log("resize");
+    // 更新摄像头
+    camera.aspect = window.innerWidth / window.innerHeight;
+    //   更新摄像机的投影矩阵
+    camera.updateProjectionMatrix();
 
-  //   更新渲染器
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  //   设置渲染器的像素比例
-  renderer.setPixelRatio(window.devicePixelRatio);
-});
+    //   更新渲染器
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    //   设置渲染器的像素比例
+    renderer.setPixelRatio(window.devicePixelRatio);
+  });
 
 // 将渲染器添加到body
 // document.body.appendChild(renderer.domElement);
 
 // 初始化控制器
-const controls = new OrbitControls(camera, renderer.domElement);
+  const controls = new OrbitControls(camera, renderer.domElement);
 // 设置控制器阻尼
-controls.enableDamping = true;
+  controls.enableDamping = true;
 
-const clock = new THREE.Clock();
-function animate() {
-  const elapsedTime = clock.getElapsedTime();
-  shaderMaterial.uniforms.uTime.value = elapsedTime;
-  requestAnimationFrame(animate);
-  // 使用渲染器渲染相机看这个场景的内容渲染出来
-  renderer.render(scene, camera);
-}
+  const clock = new Clock();
 
-animate();
+  function animate() {
+    const elapsedTime = clock.getElapsedTime();
+    shaderMaterial.uniforms.uTime.value = elapsedTime;
+    requestAnimationFrame(animate);
+    // 使用渲染器渲染相机看这个场景的内容渲染出来
+    renderer.render(scene, camera);
+  }
+
+  animate();
 });
 </script>
 

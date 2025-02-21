@@ -117,7 +117,7 @@ onMounted(async () => {
     // VelocityOrientationProperty会自动根据采样点，计算出飞机的速度和方向
     orientation: new VelocityOrientationProperty(positionProperty),
     model: {
-      uri: "/model/Air.glb",
+      uri: "/models/Air.glb",
       // minimumPixelSize: 128,
       // maximumScale: 20000,
     },

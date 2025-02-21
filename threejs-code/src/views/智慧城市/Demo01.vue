@@ -8,8 +8,8 @@
 <script setup>
 import Scene from "./components/Scene.vue";
 import BigScreen from "./components/BigScreen.vue";
-import { onMounted, reactive, ref } from "vue";
-import { getSmartCityInfo, getSmartCityList } from "@/api/api";
+import {onMounted, reactive, ref} from "vue";
+import {getSmartCityInfo, getSmartCityList} from "@/api/api";
 import gsap from "gsap";
 // console.log(testVertex)
 

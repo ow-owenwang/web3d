@@ -112,7 +112,7 @@ OmegaCity.prototype.initPlayers = function() {
 
 OmegaCity.prototype.initProps = function() {
 
-	// Load the missile model
+	// Load the missile models
 	this.missileStartPosition = new THREE.Vector3(0, -3, 0);
 	this.explosionDuration = 2.5;
 	
@@ -217,7 +217,7 @@ OmegaCity.prototype.initProps = function() {
 
 OmegaCity.prototype.onPropsLoadComplete = function(data) {
 	
-	// Missile model loaded, add it to the scene with some behaviors
+	// Missile models loaded, add it to the scene with some behaviors
 	var missile = data.scene;
 	missile.transform.rotation.y = -Math.PI / 2;
 	missile.transform.scale.set(.6, .6, .6);

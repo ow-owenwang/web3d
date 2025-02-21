@@ -985,7 +985,7 @@
         brand: null,
 
         /**
-        * The device model (iPhone 4S, SAMSUNG-SGH-I997, SAMSUNG-SGH-I997R, etc)
+        * The device models (iPhone 4S, SAMSUNG-SGH-I997, SAMSUNG-SGH-I997R, etc)
         * @type string
         */
         model: null,

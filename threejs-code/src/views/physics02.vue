@@ -1,21 +1,30 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import {onMounted, ref} from "vue";
 // 导入轨道控制器
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// 导入动画库
-import gsap from "gsap";
-// 导入dat.gui
-import * as dat from "dat.gui";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 // 导入connon引擎
 import * as CANNON from "cannon-es";
+import {
+  AmbientLight,
+  AxesHelper,
+  Clock,
+  DirectionalLight,
+  Mesh,
+  MeshStandardMaterial,
+  PerspectiveCamera,
+  PlaneGeometry,
+  Scene,
+  SphereGeometry,
+  WebGLRenderer
+} from "three";
+
 const canvasRef = ref();
 
 onMounted(() => {
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 2、创建相机
-  const camera = new THREE.PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -27,15 +36,15 @@ onMounted(() => {
   scene.add(camera);
 
   // 创建球和平面
-  const sphereGeometry = new THREE.SphereGeometry(1, 20, 20);
-  const sphereMaterial = new THREE.MeshStandardMaterial();
-  const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  const sphereGeometry = new SphereGeometry(1, 20, 20);
+  const sphereMaterial = new MeshStandardMaterial();
+  const sphere = new Mesh(sphereGeometry, sphereMaterial);
   sphere.castShadow = true;
   scene.add(sphere);
 
-  const floor = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(20, 20),
-    new THREE.MeshStandardMaterial()
+  const floor = new Mesh(
+    new PlaneGeometry(20, 20),
+    new MeshStandardMaterial()
   );
 
   floor.position.set(0, -5, 0);
@@ -79,15 +88,15 @@ onMounted(() => {
   world.addBody(floorBody);
 
   //添加环境光和平行光
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+  const ambientLight = new AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  const dirLight = new DirectionalLight(0xffffff, 0.5);
   dirLight.castShadow = true;
   scene.add(dirLight);
 
   // 初始化渲染器
   // 渲染器透明
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
+  const renderer = new WebGLRenderer({canvas: canvasRef.value, alpha: true });
   // 设置渲染的尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
   // 开启场景中的阴影贴图
@@ -95,7 +104,7 @@ onMounted(() => {
 
   // console.log(renderer);
   // 将webgl渲染的canvas内容添加到body
-  document.body.appendChild(renderer.domElement);
+  // document.body.appendChild(renderer.domElement);
 
   // // 使用渲染器，通过相机将场景渲染进来
   // renderer.render(scene, camera);
@@ -106,10 +115,10 @@ onMounted(() => {
   controls.enableDamping = true;
 
   // 添加坐标轴辅助器
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
   // 设置时钟
-  const clock = new THREE.Clock();
+  const clock = new Clock();
 
   function render() {
     //   let time = clock.getElapsedTime();

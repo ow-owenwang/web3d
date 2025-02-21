@@ -169,8 +169,8 @@ function normalizeAxes(x = 0, y = 0) {
 }
 
 /**
- * Contains the description of how the 3D model should visually respond to a specific user input.
- * This is accomplished by initializing the object with the name of a node in the 3D model and
+ * Contains the description of how the 3D models should visually respond to a specific user input.
+ * This is accomplished by initializing the object with the name of a node in the 3D models and
  * property that need to be modified in response to user input, the name of the nodes representing
  * the allowable range of motion, and the name of the input which triggers the change. In response
  * to the named input changing, this object computes the appropriate weighting to use for

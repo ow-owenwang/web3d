@@ -1,24 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as THREE from "three";
-
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import gsap from "gsap";
-import * as dat from "dat.gui";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { Color } from "three";
+import {onMounted, ref} from "vue";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {
+  AdditiveBlending,
+  AxesHelper,
+  BufferAttribute,
+  BufferGeometry,
+  Clock,
+  Color,
+  PerspectiveCamera,
+  Points,
+  Scene,
+  ShaderMaterial,
+  TextureLoader,
+  WebGLRenderer
+} from "three";
 
 const canvasRef = ref();
 
 onMounted(() => {
-  const gui = new dat.GUI();
-
-  // console.log(THREE);
-  // 初始化场景
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
   // 创建透视相机
-  const camera = new THREE.PerspectiveCamera(
+  const camera = new PerspectiveCamera(
     75,
     window.innerHeight / window.innerHeight,
     0.1,
@@ -33,28 +37,28 @@ onMounted(() => {
   scene.add(camera);
 
   // 加入辅助轴，帮助我们查看3维坐标轴
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new AxesHelper(5);
   scene.add(axesHelper);
 
-  // const geometry = new THREE.BufferGeometry();
+  // const geometry = new BufferGeometry();
   // const positions = new Float32Array([0,0,0]);
-  // geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  // geometry.setAttribute('position',new BufferAttribute(positions,3));
 
   // 点材质
-  // const material = new THREE.PointsMaterial({
+  // const material = new PointsMaterial({
   //   color:0xff0000,
   //   size:10,
   //   sizeAttenuation:true
   // })
 
   // 导入纹理
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new TextureLoader();
   const texture = textureLoader.load("/textures/particles/10.png");
   const texture1 = textureLoader.load("/textures/particles/9.png");
   const texture2 = textureLoader.load("/textures/particles/11.png");
 
   // 点着色器材质
-  // const material = new THREE.ShaderMaterial({
+  // const material = new ShaderMaterial({
   //   uniforms:{
   //     uTexture:{
   //       value:texture
@@ -66,7 +70,7 @@ onMounted(() => {
   // })
 
   // // 生成点
-  // const points = new THREE.Points(geometry,material)
+  // const points = new Points(geometry,material)
   // scene.add(points)
   let geometry = null;
   let points = null;
@@ -83,8 +87,8 @@ onMounted(() => {
   };
 
   // GalaxyColor
-  let galaxyColor = new THREE.Color(params.color);
-  let outGalaxyColor = new THREE.Color(params.outColor);
+  let galaxyColor = new Color(params.color);
+  let outGalaxyColor = new Color(params.outColor);
   let material;
   const generateGalaxy = () => {
     // 如果已经存在这些顶点，那么先释放内存，在删除顶点数据
@@ -94,7 +98,7 @@ onMounted(() => {
       scene.remove(points);
     }
     // 生成顶点几何
-    geometry = new THREE.BufferGeometry();
+    geometry = new BufferGeometry();
     //   随机生成位置
     const positions = new Float32Array(params.count * 3);
     const colors = new Float32Array(params.count * 3);
@@ -154,18 +158,18 @@ onMounted(() => {
       // 根据索引值设置不同的图案；
       imgIndex[current] = i % 3;
     }
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-    geometry.setAttribute("aScale", new THREE.BufferAttribute(scales, 1));
-    geometry.setAttribute("imgIndex", new THREE.BufferAttribute(imgIndex, 1));
+    geometry.setAttribute("position", new BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new BufferAttribute(colors, 3));
+    geometry.setAttribute("aScale", new BufferAttribute(scales, 1));
+    geometry.setAttribute("imgIndex", new BufferAttribute(imgIndex, 1));
 
     //   设置点材质
-    //   material = new THREE.PointsMaterial({
-    //     color: new THREE.Color(0xffffff),
+    //   material = new PointsMaterial({
+    //     color: new Color(0xffffff),
     //     size: params.size,
     //     sizeAttenuation: true,
     //     depthWrite: false,
-    //     blending: THREE.AdditiveBlending,
+    //     blending: AdditiveBlending,
     //     map: particlesTexture,
     //     alphaMap: particlesTexture,
     //     transparent: true,
@@ -173,7 +177,7 @@ onMounted(() => {
     //   });
 
     //   设置点的着色器材质
-    material = new THREE.ShaderMaterial({
+    material = new ShaderMaterial({
       vertexShader: `
       
 varying vec2 vUv;
@@ -259,7 +263,7 @@ void main(){
 
       transparent: true,
       vertexColors: true,
-      blending: THREE.AdditiveBlending,
+      blending: AdditiveBlending,
       depthWrite: false,
       uniforms: {
         uTime: {
@@ -284,7 +288,7 @@ void main(){
     });
 
     //   生成点
-    points = new THREE.Points(geometry, material);
+    points = new Points(geometry, material);
     scene.add(points);
     console.log(points);
     //   console.log(123);
@@ -293,12 +297,12 @@ void main(){
   generateGalaxy();
 
   // 初始化渲染器
-  const renderer = new THREE.WebGLRenderer({
+  const renderer = new WebGLRenderer({
     canvas: canvasRef.value,
   });
   renderer.shadowMap.enabled = true;
-  // renderer.shadowMap.type = THREE.BasicShadowMap;
-  // renderer.shadowMap.type = THREE.VSMShadowMap;
+  // renderer.shadowMap.type = BasicShadowMap;
+  // renderer.shadowMap.type = VSMShadowMap;
 
   // 设置渲染尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -327,7 +331,7 @@ void main(){
   // // 设置自动旋转
   // controls.autoRotate = true;
 
-  const clock = new THREE.Clock();
+  const clock = new Clock();
 
   function animate() {
     //   controls.update();

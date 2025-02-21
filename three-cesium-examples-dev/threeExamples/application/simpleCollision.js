@@ -344,7 +344,7 @@ function update_player(delta) {
     detect_collision();
     // get the adjusted position of the capsule collider in world space after checking
     // triangle collisions and moving it. capsuleInfo.segment.start is assumed to be
-    // the origin of the player model.
+    // the origin of the player models.
     const newPosition = tempVector;
     newPosition.copy(tempSegment.start).applyMatrix4(terrain.matrixWorld);
     // check how much the collider was moved
@@ -354,7 +354,7 @@ function update_player(delta) {
     playerIsOnGround = deltaVector.y > Math.abs(delta * playerVelocity.y * 0.25);
     const offset = Math.max(0.0, deltaVector.length() - 1e-5);
     deltaVector.normalize().multiplyScalar(offset);
-    // adjust the player model
+    // adjust the player models
     player.position.add(deltaVector);
     if (!playerIsOnGround) {
         deltaVector.normalize();
