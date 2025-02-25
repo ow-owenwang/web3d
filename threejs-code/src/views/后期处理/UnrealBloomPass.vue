@@ -1,0 +1,103 @@
+<script setup lang="ts">
+import {onMounted, ref} from "vue";
+// 导入轨道控制器
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {
+  AmbientLight,
+  AxesHelper,
+  BoxGeometry,
+  Clock, DirectionalLight, Group,
+  Mesh,
+  MeshBasicMaterial, MeshLambertMaterial,
+  PerspectiveCamera,
+  PlaneGeometry,
+  Scene, Sprite, SpriteMaterial, TextureLoader, Vector2,
+  WebGLRenderer
+} from "three";
+import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer";
+import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass";
+import {OutlinePass} from "three/examples/jsm/postprocessing/OutlinePass";
+import {UnrealBloomPass} from "three/examples/jsm/postprocessing/UnrealBloomPass";
+
+const canvasRef = ref();
+
+function getModel() {
+  const geometry = new BoxGeometry(50, 50, 50);
+  const material = new MeshLambertMaterial({
+    color: 0x009999
+  })
+
+  const mesh = new Mesh(geometry, material)
+  const mesh2 = mesh.clone()
+  mesh2.position.y = 100
+  const mesh3 = mesh.clone()
+  mesh3.position.x = 100
+  const model = new Group()
+  model.add(mesh, mesh2, mesh3)
+
+
+  return {model, mesh, mesh2, mesh3};
+}
+
+onMounted(() => {
+  const scene = new Scene();
+  const {model, mesh} = getModel();
+  scene.add(model);
+
+  const axesHelper = new AxesHelper(100);
+  scene.add(axesHelper);
+
+  const directionalLight = new DirectionalLight(0xffffff, 1)
+  directionalLight.position.set(100, 60, 50)
+  scene.add(directionalLight)
+  const ambient = new AmbientLight(0xffffff, 0.4)
+  scene.add(ambient)
+
+  const width = window.innerWidth
+  const height = window.innerHeight
+  const camera = new PerspectiveCamera(30, width / height, 1, 3000)
+  camera.position.set(292, 223, 185);
+  camera.lookAt(0, 0, 0)
+
+  const renderer = new WebGLRenderer({
+    canvas: canvasRef.value,
+    antialias: true,
+  })
+  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setSize(width, height)
+
+  const composer = new EffectComposer(renderer)
+  const renderPass = new RenderPass(scene, camera)
+  composer.addPass(renderPass)
+
+  const v2 = new Vector2(width, height)
+  // TODO: 没有达到预期效果，需要查看最新版文档或者搜索案例
+  const bloomPass = new UnrealBloomPass(v2, scene, camera)
+  // bloomPass.strength = 2
+  composer.addPass(bloomPass)
+
+
+  function render() {
+    // model.rotateY(0.01);
+    composer.render()
+    // renderer.render(scene, camera);
+    requestAnimationFrame(render);
+  }
+
+  render();
+
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+});
+</script>
+
+<template>
+  <canvas ref="canvasRef"></canvas>
+</template>
+
+<style scoped>
+canvas {
+  width: 100%;
+  height: 100%;
+}
+</style>

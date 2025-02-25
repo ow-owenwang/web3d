@@ -161,7 +161,7 @@ onMounted(() => {
   // 渲染器透明
   const renderer = new THREE.WebGLRenderer({
     canvas: canvasRef.value,
-    alpha: true,
+    // alpha: true,
   });
   // 设置渲染的尺寸大小
   renderer.setSize(window.innerWidth, window.innerHeight);
