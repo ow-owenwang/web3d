@@ -1,0 +1,103 @@
+<script setup lang="ts">
+import {onMounted, ref} from 'vue'
+import * as THREE from 'three'
+import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass";
+import {UnrealBloomPass} from "three/examples/jsm/postprocessing/UnrealBloomPass";
+import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+
+const canvasRef = ref()
+
+onMounted(() => {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas: canvasRef.value,
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  // document.body.appendChild(renderer.domElement);
+
+
+
+  const geometry = new THREE.SphereGeometry(1, 32, 32);
+  const sphere = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0xff0000 }));
+
+  const boxGeo = new THREE.BoxGeometry();
+  const box = new THREE.Mesh(boxGeo, new THREE.MeshBasicMaterial({ color: 0x00ff00 }));
+  box.position.x = 5
+
+
+  sphere.layers.set(0);
+  scene.add(sphere);
+  box.layers.set(1);
+  scene.add(box);
+  camera.position.z = 10;
+
+
+  const renderScene = new RenderPass(scene, camera);
+  //constructor( resolution, strength, radius, threshold )
+  const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 1, 0);
+  //bloomPass.renderToScreen = true;
+  // bloomPass.threshold = params.bloomThreshold;
+  // bloomPass.strength = params.bloomStrength;
+  // bloomPass.radius = params.bloomRadius;
+
+  const composer = new EffectComposer(renderer);
+  composer.addPass(renderScene);
+  composer.addPass(bloomPass);
+
+  let T0 = new Date();//上次时间
+  const animate = function () {
+    let T1 = new Date();//本次时间
+    let t = T1 - T0;//时间差
+    T0 = T1;//把本次时间赋值给上次时间
+    requestAnimationFrame(animate);
+    //分层渲染
+    //先渲染layer=0，再渲染layer=1，
+    //如果不设置autoClear=flase，渲染会自动清空屏幕
+    renderer.autoClear = false;
+    //手动清空
+    renderer.clear();
+    camera.layers.set(0); //渲染layer=0，带bloom效果
+    composer.render();
+
+    renderer.clearDepth(); // 清除深度缓存
+
+    camera.layers.set(1); //渲染layer=1，不带bloom效果
+    renderer.render(scene, camera);
+    scene.rotation.y += 0.001*t;// 每毫秒旋转0.001
+
+  };
+  // const animate = function () {
+
+  //     requestAnimationFrame(animate);
+  //     renderer.autoClear = false;
+  //     renderer.clear();
+  //     camera.layers.set(0);
+  //     composer.render();
+
+  //     renderer.clearDepth();
+  //     camera.layers.set(1);
+  //     renderer.render(scene, camera);
+  // };
+  //添加鼠标控制
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.maxPolarAngle = Math.PI * 0.5;
+  controls.minDistance = 1;
+  controls.maxDistance = 100;
+  // controls.addEventListener('change', animate);
+  animate();
+})
+</script>
+
+<template>
+  <canvas ref="canvasRef"></canvas>
+</template>
+
+<style scoped>
+canvas {
+  width: 100%;
+  height: 100%;
+}
+</style>

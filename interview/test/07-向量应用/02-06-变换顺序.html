@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>视图变换</title>
+    <style>
+        html{height: 100%}
+        body{height: 100%;margin: 0;}
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script type="module">
+    import Vector2 from "../../jsm/core/Vector2.js"
+    import Group from "../../jsm/core/Group.js"
+    import Poly from "../../jsm/core/Poly.js"
+    import Lattice from "../../jsm/modifierLib/Lattice.js"
+    import {getMousePos,setPosToBottom,setPosToTop} from "../../jsm/utils/Tool.js";
+    import Point from "../../jsm/modifierLib/latticeShapeLib/Point.js"
+    import Ball from "../../jsm/shapeLib/Ball.js"
+    import Axis from "../../jsm/helperLib/Axis.js"
+    import Rect from "../../jsm/shapeLib/Rect.js"
+
+    const canvas=document.getElementById('canvas');
+    const [w,h]=[window.innerWidth,window.innerHeight];
+    canvas.width=3000;
+    canvas.height=h;
+    const ctx=canvas.getContext('2d');
+
+    {
+        const scene=new Group({
+            position:new Vector2(100,300)
+        });
+        const group=new Group();
+        scene.add(group);
+
+        const axis=new Axis({
+            size:200
+        })
+
+        const rect=new Rect({
+            size: new Vector2(100,100),
+            position:new Vector2(0,-100),
+            stroke:true
+        })
+
+        group.add(rect);
+        group.add(axis);
+
+        scene.draw(ctx);
+
+        group.position.y+=300;
+        group.globalAlpha=0.3;
+        scene.draw(ctx);
+
+        group.rotation=Math.PI/12;
+        group.globalAlpha=1;
+        scene.draw(ctx);
+    }
+    {
+        const scene=new Group({position:new Vector2(500,300)});
+
+        const group=new Group({
+            sorf:'rts',
+        });
+        scene.add(group);
+
+        const axis=new Axis({
+            size:200
+        })
+
+        const rect=new Rect({
+            size: new Vector2(100,100),
+            position:new Vector2(0,-100),
+            stroke:true
+        })
+
+        group.add(rect);
+        group.add(axis);
+        group.globalAlpha=0.3;
+        scene.draw(ctx);
+
+        group.rotation=Math.PI/24;
+        group.globalAlpha=1;
+        scene.draw(ctx);
+
+        group.position.y+=300;
+        scene.draw(ctx);
+    }
+
+    {
+        const scene=new Group({position:new Vector2(900,300)});
+
+        const group=new Group({
+            sorf:'rs',
+        });
+        scene.add(group);
+
+        const axis=new Axis({
+            size:200
+        })
+
+        const rect=new Rect({
+            size: new Vector2(100,100),
+            position:new Vector2(0,-100),
+            stroke:true
+        })
+
+        group.add(rect);
+        group.add(axis);
+        group.globalAlpha=0.3;
+        scene.draw(ctx);
+
+        group.rotation=Math.PI/24;
+        group.globalAlpha=0.3;
+        scene.draw(ctx);
+
+        group.scale=new Vector2(1.3,1.3);
+        group.globalAlpha=1;
+        scene.draw(ctx);
+    }
+    {
+        const scene=new Group({position:new Vector2(1300,300)});
+
+        const group=new Group({
+            sorf:'sr',
+        });
+        scene.add(group);
+
+        const axis=new Axis({
+            size:200
+        })
+
+        const rect=new Rect({
+            size: new Vector2(100,100),
+            position:new Vector2(0,-100),
+            stroke:true
+        })
+
+        group.add(rect);
+        group.add(axis);
+        group.globalAlpha=0.3;
+        scene.draw(ctx);
+
+        group.scale=new Vector2(1.3,1.3);
+        group.globalAlpha=0.3;
+        scene.draw(ctx);
+
+        group.rotation=Math.PI/24;
+        group.globalAlpha=1;
+        scene.draw(ctx);
+    }
+
+    {
+        const scene=new Group({
+            position:new Vector2(1700,300)
+        });
+        const group=new Group({
+            sorf:'ts',
+        });
+        scene.add(group);
+
+        const axis=new Axis({
+            size:200
+        })
+
+        const rect=new Rect({
+            size: new Vector2(100,100),
+            position:new Vector2(0,-100),
+            stroke:true
+        })
+
+        group.add(rect);
+        group.add(axis);
+
+        scene.draw(ctx);
+
+        group.position.y+=350;
+        group.globalAlpha=0.3;
+        scene.draw(ctx);
+
+        group.scale=new Vector2(1.3,1.3);
+        group.globalAlpha=1;
+        scene.draw(ctx);
+    }
+    {
+        const scene=new Group({position:new Vector2(2100,300)});
+
+        const group=new Group({
+            sorf:'st',
+        });
+        scene.add(group);
+
+        const axis=new Axis({
+            size:200
+        })
+
+        const rect=new Rect({
+            size: new Vector2(100,100),
+            position:new Vector2(0,-100),
+            stroke:true
+        })
+
+        group.add(rect);
+        group.add(axis);
+        group.globalAlpha=0.3;
+        scene.draw(ctx);
+
+        group.scale=new Vector2(1.3,1.3);
+        group.globalAlpha=1;
+        scene.draw(ctx);
+
+        group.position.y+=350;
+        scene.draw(ctx);
+    }
+
+
+</script>
+</body>
+</html>
